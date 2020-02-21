@@ -1,0 +1,16 @@
+#net {
+    background-color: #011638;
+}
+
+.net-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.net-container:hover {
+    cursor: grab;
+}
