@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Meaning of Life project (Alia Kapadia)",
   "main": "index.js",
+
   "dependencies": {
     "@types/body-parser": "^1.17.1",
     "@types/dotenv": "^8.2.0",
@@ -17,6 +18,7 @@
     "mongoose": "^5.8.7",
     "winston": "^3.2.1"
   },
+
   "devDependencies": {
     "@types/jest": "^24.0.25",
     "jest": "^24.9.0",
@@ -24,16 +26,19 @@
     "ts-jest": "^24.3.0",
     "typescript": "^3.7.4"
   },
+
   "scripts": {
-    "build": "rm -rf ./bin && tsc -p .",
+    "build": "tsc -p .",
     "start": "node bin/src/Server.js",
     "dep-graph": "node ./scripts/madge",
     "test": "jest"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Pomona-ITS/mol.git"
   },
+
   "author": "",
   "license": "ISC",
   "bugs": {

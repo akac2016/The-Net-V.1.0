@@ -1,5 +1,6 @@
 import PingRouter from "./PingRouter";
 import Router from "./Router";
+import TestPage from './TestPage'
 
 export default class RoutingTable {
     // Table of all relative urls mapped to their routers
@@ -7,7 +8,10 @@ export default class RoutingTable {
 
     constructor() {
         this.table = new Map<string, Router>();
+
         this.table.set('/ping', new PingRouter());
+        this.table.set('/', new TestPage());
+
     }
 
     // Gets the routing table
