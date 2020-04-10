@@ -1,10 +1,11 @@
 import InterviewGraph from "./InterviewGraph";
 import InterviewNode from "./InterviewNode";
 import Point from "./Point";
-declare var kdTree: any;
 
 const Radius : number = 7;
 const Margin : number = 5;
+const MaxDistance : number = 200;
+const NearestNeighborCount : number = 3;
 
 export default class InterviewGraphFactory {
     private canvasSize : Point;
@@ -13,64 +14,21 @@ export default class InterviewGraphFactory {
         this.canvasSize = canvasSize;
     }
 
-    public create(n : number) : InterviewGraph {
+    public create(interviews : string[]) : InterviewGraph {
         const graph : InterviewGraph = new InterviewGraph();
-        this.generateNodes(graph, n);
-        const pointMapping : Map<Point, InterviewNode> = this.getPointMapping(graph);
-        var tree = new kdTree(this.getPoints(graph), this.distance, ["x", "y"]);
-        if (tree == null) {
-            throw new Error("Failed to build a KDTree");
-        }
-        this.generateEdges(graph, tree, pointMapping);
+        this.generateNodes(graph, interviews);
+        this.generateEdges(graph);
         return graph;
     }
 
-    private getPointMapping(graph : InterviewGraph): Map<Point, InterviewNode> {
-        const mapping : Map<Point, InterviewNode> = new Map();
-        for (let node of graph.vertexes()) {
-            mapping.set(node.getCenter(), node);
-        }
-        return mapping;
-    }
-
-    private getPoints(graph : InterviewGraph): any {
-        return graph.vertexes().map((node : InterviewNode) => {
-            return {
-                x: node.getCenter().getX(),
-                y: node.getCenter().getY()
-            };
-        })
-    }
-
-    private distance(a : any, b: any) {
-        if (a.x == b.x && a.x == b.x) {
-            return Number.POSITIVE_INFINITY;
-        }
-        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-    }
-
-    private generateNodes(graph : InterviewGraph, n : number) {
-        while (graph.size() < n) {
-            graph.addNode(this.createNode(graph));
+    private generateNodes(graph : InterviewGraph, interviews : string[]) {
+        while (graph.size() < interviews.length) {
+            graph.addNode(this.createNode(graph, interviews[graph.size()]));
         }
     }
 
-    // TODO: Fix mapping
-    private generateEdges(graph : InterviewGraph, tree : any, mapping : Map<Point, InterviewNode>) {
-        for (let node of graph.vertexes()) {
-            for (let nearestNeighbor of tree.nearest(node.getCenter(), 3, [500])) {
-                const nearestPoint : Point = new Point(nearestNeighbor[0].x, nearestNeighbor[0].y);
-                for (let edge of graph.vertexes()) {
-                    if (edge.getCenter().getX() == nearestPoint.getX() && edge.getCenter().getY() == nearestPoint.getY()) {
-                        node.connect(edge);
-                    }
-                }
-            }
-        }
-    }
-
-    private createNode(graph : InterviewGraph) : InterviewNode {
-        return new InterviewNode(this.getRandomPoint(graph), Radius);
+    private createNode(graph : InterviewGraph, id : string) : InterviewNode {
+        return new InterviewNode(id, this.getRandomPoint(graph), Radius);
     }
 
     private getRandomPoint(graph : InterviewGraph) : Point {
@@ -87,5 +45,70 @@ export default class InterviewGraphFactory {
 
     private getRandomValueInRange(max : number) : number {
         return Math.floor(Math.random() * ((max - Radius - Margin) - Radius + 1)) + (Radius + Margin);
+    }
+
+    private generateEdges(graph : InterviewGraph) {
+        this.createNearestConnections(graph);
+        this.connectSoloNodes(graph);
+        this.connectDisjointSets(graph);
+    }
+
+    private createNearestConnections(graph : InterviewGraph) {
+        const mapping : Map<Point, InterviewNode> = graph.getPointMapping();
+        const kdTree : any = graph.getKDTree();
+        for (let node of graph.vertexes()) {
+            const nearestNeighbors = kdTree.nearest(node.getCenter(), NearestNeighborCount, [MaxDistance]);
+            for (let nearestNeighbor of nearestNeighbors) {
+                let toConnect : InterviewNode | undefined = mapping.get(nearestNeighbor[0]);
+                if (toConnect !== undefined && !node.hasEdge(toConnect)) {
+                    node.connect(toConnect);
+                } else {
+                    throw new Error("Could not find a mapping to the node at the nearest neighbor")
+                }
+            }
+        }
+    }
+
+    private connectSoloNodes(graph : InterviewGraph) {
+        for (let node of graph.vertexes()) {
+            if (node.getEdges().length == 0) {
+                let nearestNeighbor = graph.getKDTree().nearest(node.getCenter(), 1)
+                node.connect(graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode);
+            }
+        }
+    }
+
+    private connectDisjointSets(graph : InterviewGraph) {
+        const parent : string[] = [];
+        const idMapping : Map<string, number> = new Map<string, number>();
+        for (let i = 0; i < graph.size(); i++) {
+            parent[i] = "";
+            idMapping.set(graph.vertexes()[i].getId(), i);
+        }
+        for (let node of graph.vertexes()) {
+            const a: string = this.find(parent, node.getId(), idMapping);
+            for (let edge of node.getEdges()) {
+                const b: string = this.find(parent, edge.getId(), idMapping);
+                this.union(parent, a, b, idMapping);
+            }
+        }
+        console.log(parent);
+    }
+
+    private find(parent : string[], id : string, idMapping : Map<string, number>) : string {
+        if (idMapping.get(id) === undefined) {
+            throw new Error("Unknown interview id");
+        }
+        const index = idMapping.get(id) as number
+        if (parent[index] == "") {
+            return id;
+        }
+        return this.find(parent, parent[index], idMapping);
+    }
+
+    private union(parent : string[], x : string, y : string, idMapping : Map<string, number>) {
+        const xset : number = idMapping.get(this.find(parent, x, idMapping)) as number;
+        const yset : string = this.find(parent, y, idMapping)
+        parent[xset] = yset;
     }
 }

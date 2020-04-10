@@ -1,16 +1,22 @@
 import Point from "./Point";
+import Axios from "axios";
+import Interview from "./Interview";
 
 const Margin : number = 30
 
 export default class InterviewNode {
+    private id : string;
     private center : Point;
     private radius : number;
     private edges : InterviewNode[];
+    private isSelected : boolean;
 
-    constructor(center : Point, radius : number) {
+    constructor(id : string, center : Point, radius : number) {
+        this.id = id;
         this.center = center;
         this.radius = radius;
         this.edges = [];
+        this.isSelected = false;
     }
 
     public draw(context : CanvasRenderingContext2D) {
@@ -22,9 +28,17 @@ export default class InterviewNode {
             0,
             360
         );
-        context.fillStyle = "white";
+        if (!this.isSelected) {
+            context.fillStyle = "white";
+        } else {
+            context.fillStyle = "red";
+        }
         context.fill();
         context.closePath();
+    }
+
+    public select() {
+        this.isSelected = true;
     }
 
     public drawEdges(context : CanvasRenderingContext2D) {
@@ -43,6 +57,15 @@ export default class InterviewNode {
         return this.edges;
     }
 
+    public hasEdge(other: InterviewNode) : boolean {
+        for (let edge of this.edges) {
+            if (edge.center.equals(other.center)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public getCenter() : Point {
         return this.center;
     }
@@ -58,5 +81,14 @@ export default class InterviewNode {
     private distanceFromCenter(point : Point) {
         return Math.sqrt(((point.getX() - this.center.getX()) * (point.getX() - this.center.getX())) +
                 ((point.getY() - this.center.getY()) * (point.getY() - this.center.getY())))
+    }
+
+    public async getInterview() : Promise<Interview> {
+        const response = await Axios.get(`/path/to/interview/${this.id}`);
+        return response.data as Interview;
+    }
+
+    public getId() : string {
+        return this.id;
     }
 }
