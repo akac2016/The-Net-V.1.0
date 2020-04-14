@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-
+from django.contrib import messages
 
 
 
 # Signup View
-def signup(request):
+def signup_view(request):
     #Check Request and Form Validity
     if request.method == "POST":
         form = UserCreationForm(request.POST)
@@ -26,8 +26,19 @@ def signup(request):
     return render(request,'signup/signup.html',{'form':form})
 
 
+#Login View
+def login_view(request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request,username=username,password=password)
+        if user is not None:
+            login(request,user)
+            return render(request,'main/home.html')
+        else:
+            messages.error(request,'username or password not correct')
+            return redirect('login')
 
 #Logout View
-def logout(request):
-    pass
-
+def logout_view(request):
+    logout(request)
+    return render(request,'main/home.html')
