@@ -12,6 +12,7 @@ interface IProps {
 
 interface IState {
     slides: boolean[]
+    slideProgression: boolean[]
     currentIndex: number
 }
 
@@ -30,6 +31,10 @@ export default class SlideShow extends React.Component<IProps, IState> {
         }
         this.state = {
             slides: React.Children.map(props.children, (element) => {
+                let slide : Slide = element as Slide;
+                return slide.props.isPrimary ? true : false
+            }),
+            slideProgression: React.Children.map(props.children, (element) => {
                 let slide : Slide = element as Slide;
                 return slide.props.isPrimary ? true : false
             }),
@@ -56,7 +61,7 @@ export default class SlideShow extends React.Component<IProps, IState> {
                     <SlideShowControl action={this.next} isLeft={false}></SlideShowControl>
                     <SlideShowProgression
                         displaySlide={this.displaySlide} 
-                        slides={this.state.slides}>
+                        slides={this.state.slideProgression}>
                     </SlideShowProgression>
                 </SlideShowControlOverlay>
             </div>
@@ -70,6 +75,7 @@ export default class SlideShow extends React.Component<IProps, IState> {
         }
         this.setState({
             slides: this.state.slides.map((slide, i) => false),
+            slideProgression: this.state.slideProgression.map((slide, i) => i === currentIndex),
             currentIndex: currentIndex
         }, () => {
             setTimeout(() => {
@@ -87,6 +93,7 @@ export default class SlideShow extends React.Component<IProps, IState> {
         }
         this.setState({
             slides: this.state.slides.map((slide, i) => false),
+            slideProgression: this.state.slideProgression.map((slide, i) => i === currentIndex),
             currentIndex: currentIndex
         }, () => {
             setTimeout(() => {
@@ -100,6 +107,7 @@ export default class SlideShow extends React.Component<IProps, IState> {
     public displaySlide(slideNumber : number) {
         this.setState({
             slides: this.state.slides.map((slide, i) => false),
+            slideProgression: this.state.slideProgression.map((slide, i) => i === slideNumber),
             currentIndex: slideNumber
         }, () => {
             setTimeout(() => {

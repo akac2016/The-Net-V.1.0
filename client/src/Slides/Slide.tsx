@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import SlideTheme from "../Theme/SlideTheme";
 
 interface IProps {
     isPrimary?: boolean
@@ -7,7 +8,10 @@ interface IProps {
 }
 
 const Container : any = styled.div`
-background-color: #F4EEE6;
+background-color: ${(props: IProps) => props.useSecondary ? 
+    SlideTheme.colors.background.secondary : 
+    SlideTheme.colors.background.main
+};
 top: 0;
 left: 0;
 position: absolute;
@@ -19,7 +23,7 @@ transition: 1500ms;
 export default class Slide extends React.Component<IProps, {}> {
     render() {
         return (
-            <Container>
+            <Container useSecondary={this.props.useSecondary}>
                 {this.props.children}
             </Container>
         )

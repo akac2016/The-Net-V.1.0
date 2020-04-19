@@ -10,7 +10,6 @@ library.add(faChevronRight, faChevronLeft)
 
 // TODO
 // Fade intro after 4 seconds
-// Slideshow for beige slides
 // Add flashlight feature to net
 // Add a way to add people to the net
 // Make Nodes appear 3D
@@ -33,7 +32,7 @@ export default class App extends React.Component<{}, {}> {
 					<Slide>
 						<h1>Principle 3</h1>
 					</Slide> 
-					<Slide>
+					<Slide useSecondary>
 						<h1>Principle 4</h1>
 					</Slide> 
 				</SlideShow>
