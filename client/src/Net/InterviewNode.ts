@@ -1,6 +1,7 @@
 import Point from "./Point";
 import Axios from "axios";
 import Interview from "./Interview";
+import { Coordinates } from "./Coordinates";
 
 const Margin : number = 30
 
@@ -9,45 +10,58 @@ export default class InterviewNode {
     private center : Point;
     private radius : number;
     private edges : InterviewNode[];
-    private isSelected : boolean;
+    private wasSelected : boolean;
 
     constructor(id : string, center : Point, radius : number) {
         this.id = id;
         this.center = center;
         this.radius = radius;
         this.edges = [];
-        this.isSelected = false;
+        this.wasSelected = false;
+    }
+
+    public toJson() : string {
+        const json : any = {
+            id: this.id,
+            center: this.center,
+            radius: this.radius,
+            wasSelected: this.wasSelected
+        }
+        return json;
     }
 
     public draw(context : CanvasRenderingContext2D) {
         context.beginPath();
+        const worldPosition = Coordinates.screenToWorldPoint(this.center);
         context.arc(
-            this.center.getX(), 
-            this.center.getY(),
-            this.radius,
+            worldPosition.getX(), 
+            worldPosition.getY(),
+            Coordinates.scaleValue(this.radius),
             0,
             360
         );
-        if (!this.isSelected) {
+        if (!this.wasSelected) {
             context.fillStyle = "white";
         } else {
-            context.fillStyle = "red";
+            context.fillStyle = "#FFE591";
         }
         context.fill();
         context.closePath();
     }
 
     public select() {
-        this.isSelected = true;
+        this.wasSelected = true;
     }
 
     public drawEdges(context : CanvasRenderingContext2D) {
         for (let node of this.edges) {
             context.beginPath()
-            context.moveTo(this.center.getX(), this.center.getY());
-            context.lineTo(node.center.getX(), node.center.getY());
+            const worldPosition = Coordinates.screenToWorldPoint(this.center);
+            const otherWorldPosition = Coordinates.screenToWorldPoint(node.center);
+            context.moveTo(worldPosition.getX(), worldPosition.getY());
+            context.lineTo(otherWorldPosition.getX(), otherWorldPosition.getY());
             context.strokeStyle = "rgb(230, 230, 230)";
-            context.lineWidth = 1.75;
+            context.lineWidth = Coordinates.scaleValue(1.75);
             context.stroke();
             context.closePath();
         }

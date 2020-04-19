@@ -1,0 +1,16 @@
+.slide-transition-enter {
+    opacity: 0;
+}
+
+.slide-transition-enter-active {
+    opacity: 1;
+}
+
+.slide-transition-exit {
+    opacity: 1;
+    background-color: black;
+}
+
+.slide-transition-exit-active {
+    opacity: 0;
+}

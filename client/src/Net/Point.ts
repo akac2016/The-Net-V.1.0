@@ -16,6 +16,6 @@ export default class Point {
     }
 
     public equals(other : Point) : boolean {
-        return this.x == other.x && this.y == other.y;
+        return this.x === other.x && this.y === other.y;
     }
 }

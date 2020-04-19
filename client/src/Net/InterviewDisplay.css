@@ -1,0 +1,68 @@
+.interview-modal {
+    z-index: 20;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: #F4EEE6;
+    overflow: scroll;
+}
+
+.interview-container {
+    display: block;
+    width: 80vw;
+    margin: 70px auto;
+}
+
+.interview-modal button {
+    right: 20px;
+    top: 15px;
+    position: fixed;
+    display: block;
+    width: 50px;
+    height: 50px;
+    color : white;
+    font-weight: bold;
+    background-color: #65B4D0;
+    border: 3px solid white;
+    transition: 0.75s ease-in-out;
+    font-size: 28px;
+    padding: 5px 5px;
+    outline:none;
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.75);
+    border-radius: 100%;
+}
+
+@media screen and (min-width: 1100px) {
+    .interview-modal button {
+        top: 35px;
+        right: 0;
+        right: 300px;
+    }
+
+}
+
+.interview-modal button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.interview-modal h1 {
+    font-size: 47px;
+}
+
+.interview-modal img {
+    display: block;
+    border: 3px solid #011638;
+    max-width: 500px;
+    max-height: 500px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.interview-modal p {
+    font-size: 30px;
+}

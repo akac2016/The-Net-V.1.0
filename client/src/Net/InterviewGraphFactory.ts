@@ -50,7 +50,8 @@ export default class InterviewGraphFactory {
     private generateEdges(graph : InterviewGraph) {
         this.createNearestConnections(graph);
         this.connectSoloNodes(graph);
-        this.connectDisjointSets(graph);
+        // Todo
+        // this.connectDisjointSets(graph);
     }
 
     private createNearestConnections(graph : InterviewGraph) {
@@ -71,7 +72,7 @@ export default class InterviewGraphFactory {
 
     private connectSoloNodes(graph : InterviewGraph) {
         for (let node of graph.vertexes()) {
-            if (node.getEdges().length == 0) {
+            if (node.getEdges().length === 0) {
                 let nearestNeighbor = graph.getKDTree().nearest(node.getCenter(), 1)
                 node.connect(graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode);
             }
@@ -100,7 +101,8 @@ export default class InterviewGraphFactory {
             throw new Error("Unknown interview id");
         }
         const index = idMapping.get(id) as number
-        if (parent[index] == "") {
+        console.log(index, parent[index]);
+        if (parent[index] === "" || parent[index] === id) {
             return id;
         }
         return this.find(parent, parent[index], idMapping);
