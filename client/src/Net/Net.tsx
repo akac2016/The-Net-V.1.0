@@ -194,7 +194,6 @@ export default class Net extends React.Component<{}, IState> {
     private updateMousePosition(event : MouseEvent) {
         if (this.canvas) {
             const boundingRect : DOMRect | undefined = this.canvas.getBoundingClientRect();
-            console.log(event.clientX, event.clientY);
             Mouse.setScreenPosition(new Point(
                 event.clientX - boundingRect.left,
                 event.clientY - boundingRect.top

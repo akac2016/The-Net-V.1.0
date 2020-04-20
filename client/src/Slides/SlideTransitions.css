@@ -8,7 +8,6 @@
 
 .slide-transition-exit {
     opacity: 1;
-    background-color: black;
 }
 
 .slide-transition-exit-active {

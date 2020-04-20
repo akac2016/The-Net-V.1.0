@@ -1,0 +1,15 @@
+.screen-transition-enter {
+    opacity: 0;
+}
+
+.screen-transition-enter-active {
+    opacity: 1;
+}
+
+.screen-transition-exit {
+    opacity: 1;
+}
+
+.screen-transition-exit-active {
+    opacity: 0;
+}

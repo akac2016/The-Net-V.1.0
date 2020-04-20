@@ -37,7 +37,14 @@ declare module 'styled-components' {
     }
 
     export interface LoadScreenTheme {
-
+        colors: {
+            background: {
+                main: string,
+            }
+            text: {
+                primary: string
+            }
+        }
     }
 
     export interface InterviewTheme {

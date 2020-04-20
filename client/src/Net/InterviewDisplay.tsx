@@ -9,17 +9,13 @@ interface IProps {
 }
 
 export default class InterviewDisplay extends React.Component<IProps, {}> {
-    constructor(props: IProps) {
-        super(props);
-    }
-
     public render() {
         return (
             <div className="interview-modal">
                 <div className="interview-container">
                     <button onClick={this.props.closeHandler}>X</button>
                     <h1>{this.props.title}</h1>
-                    { this.props.imageSource ? <img src={this.props.imageSource} alt="Interview Photo"></img> : null}
+                    { this.props.imageSource ? <img src={this.props.imageSource} alt="Interview Depiction"/> : null}
                     <p>{this.props.text}</p>
                 </div>
             </div>

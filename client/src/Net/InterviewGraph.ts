@@ -1,6 +1,5 @@
 import InterviewNode from "./InterviewNode";
 import Point from "./Point";
-import src from "*.bmp";
 declare var kdTree: any;
 
 export default class InterviewGraph {

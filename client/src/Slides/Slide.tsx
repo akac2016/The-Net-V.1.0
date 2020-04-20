@@ -17,7 +17,7 @@ left: 0;
 position: absolute;
 width: 100%;
 height: 100%;
-transition: 1500ms;
+transition: 1000ms;
 `;
 
 export default class Slide extends React.Component<IProps, {}> {
