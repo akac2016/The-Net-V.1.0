@@ -5,6 +5,7 @@ import SlideTheme from "../Theme/SlideTheme";
 interface IProps {
     isPrimary?: boolean
     useSecondary?: boolean
+    transitionDuration? : number;
 }
 
 const Container : any = styled.div`
@@ -17,13 +18,18 @@ left: 0;
 position: absolute;
 width: 100%;
 height: 100%;
-transition: 1000ms;
+transition: ${(props : IProps) => props.transitionDuration ? 
+    props.transitionDuration : 
+    0}ms;
 `;
 
 export default class Slide extends React.Component<IProps, {}> {
     render() {
         return (
-            <Container useSecondary={this.props.useSecondary}>
+            <Container 
+                transitionDuration={this.props.transitionDuration} 
+                useSecondary={this.props.useSecondary}
+            >
                 {this.props.children}
             </Container>
         )

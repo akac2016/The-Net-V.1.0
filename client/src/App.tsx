@@ -19,6 +19,8 @@ library.add(faChevronRight, faChevronLeft)
 // Change the interviews 
 // Disqus
 
+const TransitionDuration : number = 1000;
+
 interface IState {
 	hasLoaded: boolean;
 	hasExitedSlides: boolean
@@ -44,8 +46,8 @@ export default class App extends React.Component<{}, IState> {
 	public render() {
 		return (
 			<div className="App">
-				<LoadingScreen hasLoaded={this.state.hasLoaded}/>
-				<SlideShow transitionTime={1000}>
+				<LoadingScreen transitionDuration={TransitionDuration} hasLoaded={this.state.hasLoaded}/>
+				<SlideShow transitionDuration={TransitionDuration}>
 					<Slide isPrimary>
 						<h1>Principle 1</h1>
 					</Slide> 

@@ -8,7 +8,7 @@ import SlideWrapper from "./SlideWrapper";
 
 interface IProps {
     children: React.ReactNode
-    transitionTime: number   
+    transitionDuration: number   
 }
 
 interface IState {
@@ -55,7 +55,7 @@ export default class SlideShow extends React.Component<IProps, IState> {
                 <SlideContainer>
                     {React.Children.map(this.props.children, (slide : any, i : number) => {
                         return <SlideWrapper 
-                            transitionTime={this.props.transitionTime} 
+                            transitionDuration={this.props.transitionDuration} 
                             isActive={this.state.slides[i]}>
                             {slide}
                         </SlideWrapper>
@@ -107,7 +107,7 @@ export default class SlideShow extends React.Component<IProps, IState> {
                 this.setState({
                     slides: this.getSlides(),
                 })
-            }, this.props.transitionTime)
+            }, this.props.transitionDuration)
         });
     }
 
