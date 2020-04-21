@@ -3,9 +3,11 @@ from .models import Node
 
 
 class NewNode(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(NewNode,self).__init__(*args,**kwargs)
+
     class Meta:
         model = Node
-        exclude = ['created','updated']
         fields = ['interview','image']
 
         widgets = {

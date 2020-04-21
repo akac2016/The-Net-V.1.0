@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from main.models import Node
 from main.forms import NewNode
 from django.http import JsonResponse
+from django.core import serializers
 
 #Homepage View
 def home(request):
@@ -14,7 +16,7 @@ def home(request):
 
 
 
-#NewNode Form
+#NewNode Form Test
 def node_form(request):
     if request.method == "POST":
         form = NewNode(request.POST)
@@ -34,15 +36,37 @@ def node_form(request):
 def form_ajax(request):
 
     if request.method == 'POST':
+        form = NewNode(request.POST,request.FILES)
+        if form.is_valid():
+            interview = form.cleaned_data.get('interview')
+            image = form.cleaned_data.get('image')
+            obj = Node.objects.create(interview = interview, image = image)
+            obj.save()
+            print(obj)
 
-        interview = request.POST.get('interview')
-        image = request.FILES['image']
-        f = NewNode(interview=interview,image=image)
-        print(f)
-        if f.is_valid():
-            f.save()
+        else:
+            print(form.errors)
 
 
         return JsonResponse({'responseText':True})
     else:
         return JsonResponse({'responseText':True})
+
+
+
+#Nodes Page
+def nodes_ajax(request):
+
+    if request.method == "GET":
+        obj = Node.objects.all().filter(approved=True).values('name','interview','image').order_by('created')
+        data = serializers.serialize('json',obj)
+        return JsonResponse(data)
+
+
+
+
+
+
+
+
+
