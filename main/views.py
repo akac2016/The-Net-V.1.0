@@ -15,26 +15,14 @@ def home(request):
             return redirect('signup')
 
 
-
-#NewNode Form Test
+#NewNode Form
 def node_form(request):
-    if request.method == "POST":
-        form = NewNode(request.POST)
-        if form.is_valid():
-            form = form.cleaned_data
-            form.save()
-
-        return redirect('home')
-
-    else:
-        form = NewNode()
-        return render(request, 'main/form.html', {'form':form})
-
+    form = NewNode()
+    return render(request, 'main/form.html', {'form':form})
 
 
 #Ajax
 def form_ajax(request):
-
     if request.method == 'POST':
         form = NewNode(request.POST,request.FILES)
         if form.is_valid():
@@ -53,10 +41,8 @@ def form_ajax(request):
         return JsonResponse({'responseText':True})
 
 
-
 #Nodes Page
 def nodes_ajax(request):
-
     if request.method == "GET":
         obj = Node.objects.all().filter(approved=True).values('name','interview','image').order_by('created')
         data = serializers.serialize('json',obj)

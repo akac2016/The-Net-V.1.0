@@ -8,7 +8,7 @@ class NewNode(forms.ModelForm):
 
     class Meta:
         model = Node
-        fields = ['interview','image']
+        fields = ['name','interview','image']
 
         widgets = {
             'interview':forms.TextInput(attrs={

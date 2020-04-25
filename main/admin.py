@@ -4,5 +4,6 @@ from .models import Node
 
 
 class NodeAdmin(admin.ModelAdmin):
-    list_display = ('image','interview','approved')
+    pass
+    #list_display = ('image','interview','approved')
 admin.site.register(Node,NodeAdmin)
