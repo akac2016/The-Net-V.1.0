@@ -24,6 +24,7 @@ urlpatterns = [
     path('', main_views.home, name='home'),
     path('form/', main_views.node_form, name='new_node'),
     path('post_form/', main_views.form_ajax, name='form_ajax'),
+    path("nodes/", main_views.nodes_ajax, name = "nodes"),
 
     #User URLs
     path('admin/', admin.site.urls),
