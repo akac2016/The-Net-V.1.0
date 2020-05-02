@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from main import views as main_views
 from users import views as user_views
+from comments import views as comment_views
 
 urlpatterns = [
 
@@ -31,4 +32,8 @@ urlpatterns = [
     path('signup/', user_views.signup_view, name ="signup"),
     path('login/',user_views.login_view, name = 'login'),
     path('logout/',user_views.logout_view),
+
+    #Comments
+    path('comments/<int:pk>',comment_views.get_node_comment, name="comments"),
+    path("comment_form/<int:pk>", comment_views.post_comment, name="comment_form"),
 ]

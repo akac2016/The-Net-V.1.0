@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{%block content %}
+<form method="post"  enctype = 'multipart/form-data' id = 'post_comment'>
+{%  csrf_token %}
+{{ form }}
+<input type="submit" value="Submit">
+</form>
+{% endblock content %}
+
+

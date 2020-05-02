@@ -4,6 +4,15 @@ from .models import Node
 
 
 class NodeAdmin(admin.ModelAdmin):
-    pass
-    #list_display = ('image','interview','approved')
+    list_display = ("presentation",)
+    actions = ['approve_node']
+    list_filter = ["approved","name"]
+    search_fields = ("name",)
+
+
+def approve_node(self, request, queryset):
+    queryset.update(approved=True)
+
+
 admin.site.register(Node,NodeAdmin)
+

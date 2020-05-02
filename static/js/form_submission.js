@@ -60,11 +60,3 @@ formElem.addEventListener("formdata", (e)=>{
 
 
 
-
-/*
-    var formData = new FormData(form)
-
-
- */
-
-
