@@ -10,6 +10,7 @@ import InterviewNode from "./InterviewNode";
 
 interface IProps {
     openInterview: (node : InterviewNode) => void;
+    navigationListener: () => void;
 }
 
 interface IState {
@@ -207,6 +208,7 @@ export default class Net extends React.Component<IProps, IState> {
             window.localStorage.setItem("graph", this.graph.toString());
         }
         Mouse.setMouseButtonDown(Mouse.Buttons.Left);
+        this.props.navigationListener();
     }
 
     private doesNeighborExist(nearestNeighbor : any) {
@@ -278,11 +280,7 @@ export default class Net extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <div className="net-container">
-                <div ref="nodeLayer" id="node-layer">
-                    <canvas ref="canvas" id="net"></canvas>
-                </div>
-            </div>
+            <canvas ref="canvas" id="net"></canvas>
         )
     }
 }

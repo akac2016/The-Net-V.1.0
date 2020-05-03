@@ -1,20 +1,21 @@
 import React from 'react';
 import './App.css';
-import Net from './Net/Net';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight, faChevronLeft, faCheck } from '@fortawesome/free-solid-svg-icons'
 import LoadingScreen from './LoadingScreen/LoadingScreen';
 import PrincipleSlideShow from './PrincipleSlides/PrincipleSlideShow';
 import InterviewDisplay from './Interview/InterviewDisplay';
 import Interview from './Net/Interview';
 import InterviewNode from './Net/InterviewNode';
+import NetContainer from './Net/NetContainer';
  
-library.add(faChevronRight, faChevronLeft)
+library.add(faChevronRight, faChevronLeft, faCheck)
 
 // TODO
 // Add tutorial
 // Add a way to add people to the net
 // Add admin panel
+// Upgrade net animation
 
 interface IState {
 	hasLoaded: boolean;
@@ -53,7 +54,7 @@ export default class App extends React.Component<{}, IState> {
 					transitionDuration={500} 
 					isShowing={!this.state.hasExitedSlides}
 					close={this.closeSlideShow}/> 
-				<Net openInterview={this.openInterview}></Net>
+				<NetContainer isShowing={this.state.hasExitedSlides} openInterview={this.openInterview}/>
 				<InterviewDisplay isShowing={this.state.hasClickedInterview}
 					interview={this.state.selectedInterview as Interview}
 					closeHandler={this.closeInterview} />
