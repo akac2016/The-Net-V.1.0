@@ -5,11 +5,16 @@ import styled from "styled-components";
 const ProgressionContainer : any = styled.div`
 display: flex;
 justify-content: center;
-width: 200px;
+width: 100%;
 position: absolute;
 bottom: 50px;
 left: 50%;
-margin: 0 -100px;
+margin: 0 -50%;
+
+@media (min-width: 800px) {
+    width: 90%;
+    margin: 0 -45%;
+}
 `;
 
 interface IProps {

@@ -4,17 +4,16 @@ import SlideShowControlOverlay from "./SlideShowControlOverlay";
 import SlideShowProgression from "./SlideShowProgression";
 import Slide from "./Slide";
 import SlideShowControl from "./SlideShowControl";
-import SlideWrapper from "./SlideWrapper";
 
 interface IProps {
-    children: React.ReactNode
-    transitionDuration: number   
+    children: React.ReactNode;
+    transitionDuration: number;
 }
 
 interface IState {
-    slides: boolean[]
-    slideProgression: boolean[]
-    currentIndex: number
+    slides: boolean[];
+    slideProgression: boolean[];
+    currentIndex: number;
 }
 
 export default class SlideShow extends React.Component<IProps, IState> {
@@ -48,18 +47,12 @@ export default class SlideShow extends React.Component<IProps, IState> {
 
     public render() {
         if (!this.props.children) {
-            return <div className="slide-show"></div>
+            return null
         }
         return (
-            <div className="slide-show">
-                <SlideContainer>
-                    {React.Children.map(this.props.children, (slide : any, i : number) => {
-                        return <SlideWrapper 
-                            transitionDuration={this.props.transitionDuration} 
-                            isActive={this.state.slides[i]}>
-                            {slide}
-                        </SlideWrapper>
-                    })}
+           <>
+               <SlideContainer slides={this.state.slides} transitionDuration={this.props.transitionDuration}>
+                    {this.props.children}
                 </SlideContainer>
                 <SlideShowControlOverlay>
                     <SlideShowControl action={this.previous} isLeft={true}></SlideShowControl>
@@ -69,7 +62,7 @@ export default class SlideShow extends React.Component<IProps, IState> {
                         slides={this.state.slideProgression}>
                     </SlideShowProgression>
                 </SlideShowControlOverlay>
-            </div>
+           </>
         )
     }
 

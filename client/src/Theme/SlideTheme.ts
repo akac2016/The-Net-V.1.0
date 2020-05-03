@@ -16,6 +16,12 @@ const slideTheme : SlideTheme = {
         text: {
             primary: '#011638',
             secondary: 'white'
+        },
+        button: {
+            backgroundColor: '#65B4D0',
+            textColor: 'white',
+            hoverTextColor: 'white',
+            hoverBackgroundColor: '#65B4D0'
         }
     }
 }

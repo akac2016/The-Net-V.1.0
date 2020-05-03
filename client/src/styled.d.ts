@@ -17,6 +17,12 @@ declare module 'styled-components' {
                     hover: string,
                     active: string
                 }
+            },
+            button: {
+                backgroundColor: string;
+                textColor: string;
+                hoverTextColor: string;
+                hoverBackgroundColor: string;
             }
         }
     }

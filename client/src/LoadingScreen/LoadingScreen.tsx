@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import loadingScreen from "../Theme/LoadingTheme";
 import { Transition } from "react-transition-group";
+import "./LoadingScreenAnimations.css";
+import CSSAnimator from "../Animation/CSSAnimator";
+import { TrackingInExpand } from "../Animation/Animations";
 
 const Background : any = styled.div`
 background-color: ${loadingScreen.colors.background.main};
@@ -15,8 +18,20 @@ opacity: 0;
 transition: opacity ${(props : IProps) => props.transitionDuration}ms ease-in-out;
 `;
 
+const Container : any = styled.div`
+width: 100%;
+height: 100%;
+max-height: 100vh;
+max-width: 100vw;
+overflow: hidden;
+margin: 0 auto;
+`
+
 const Text : any = styled.h1`
-color: ${loadingScreen.colors.text.primary}
+margin: 0 auto;
+padding: 150px 15px;
+color: ${loadingScreen.colors.text.primary};
+font-size: 36px;
 `
 
 interface IProps {
@@ -44,7 +59,11 @@ export default class LoadingScreen extends React.Component<IProps, {}> {
                         style={{
                             ...transitionStyles[state]
                         }}>
-                        <Text>Loading Screen</Text>
+                        <Container>
+                            <CSSAnimator animation={TrackingInExpand(1, 0)}>
+                                <Text>Have you ever wondered if there was a meaning to life?</Text>
+                            </CSSAnimator>
+                        </Container>
                     </Background>
                 )}
             </Transition>

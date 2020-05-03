@@ -4,16 +4,16 @@ import Styled from "styled-components"
 const Overlay : any = Styled.div`
 z-index: 20;
 width: 100%;
-height: 100%;
+height: 0;
 margin: 0 auto;
-top: 0;
+bottom: 0;
 left: 0;
 position: absolute;
 `
 
 const Container : any = Styled.div`
 width: 100%;
-height: 100%;
+height: 0;
 max-width: 800px;
 margin: 0 auto;
 position: relative;

@@ -5,17 +5,20 @@ import InterviewGraph from "./InterviewGraph";
 import InterviewGraphFactory from "./InterviewGraphFactory";
 import { Mouse } from "./Mouse";
 import { Coordinates } from "./Coordinates";
-import InterviewDisplay from "./InterviewDisplay";
+import InterviewNode from "./InterviewNode";
 // import Axios from "axios";
+
+interface IProps {
+    openInterview: (node : InterviewNode) => void;
+}
 
 interface IState {
     canvas: HTMLCanvasElement | null;
     context: CanvasRenderingContext2D | null;
     interviews: string[];
-    showInterview: boolean;
 }
 
-export default class Net extends React.Component<{}, IState> {
+export default class Net extends React.Component<IProps, IState> {
     context : CanvasRenderingContext2D | null;
     canvas : HTMLCanvasElement | null;
     graph: InterviewGraph | null;
@@ -34,11 +37,9 @@ export default class Net extends React.Component<{}, IState> {
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleWindowResize = this.handleWindowResize.bind(this);
-        this.hideInterview = this.hideInterview.bind(this);
         this.draw = this.draw.bind(this);
 
         this.state = {
-            showInterview: false,
             canvas: null,
             context: null,
             interviews: [],
@@ -166,11 +167,26 @@ export default class Net extends React.Component<{}, IState> {
     private handleMouseMove(event : MouseEvent) {
         if (event.type === "mousedown") {
             this.handleMouseDown(event);
+            (document.getElementById("net") as any).style.cursor = "grabbing";
         }
         if (event.type === "mouseover" || event.type === "mouseout" || event.type === "mouseup") {
+            (document.getElementById("net") as any).style.cursor = "grab";
             Mouse.setMouseButtonUp(Mouse.Buttons.Left);
         }
+        if (this.graph == null) {
+            throw new Error("Graph not generated yet");
+        }
         const lastPosition = this.updateMousePosition(event);
+        const nearestNeighbor = this.graph.getKDTree().nearest(this.getClickPoint(event), 1, [Coordinates.scaleValue(3.5)]);
+        if (nearestNeighbor && nearestNeighbor.length !== 0) {
+            const node : InterviewNode = this.graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode;
+            node.hover();
+            (document.getElementById("net") as any).style.cursor = "pointer";
+        } else {
+            for (let vertex of this.graph.vertexes()) {
+                vertex.unhover();
+            }
+        }
         if (Mouse.isMouseButtonDown(Mouse.Buttons.Left)) {
             this.updateCoordinates(lastPosition);
         }
@@ -181,14 +197,23 @@ export default class Net extends React.Component<{}, IState> {
         if (this.graph == null) {
             throw new Error("Graph not generated yet");
         }
+        (document.getElementById("net") as any).style.cursor = "grabbing";
         const eventPoint : Point = this.getClickPoint(event);
-        const nearestNeighbor = this.graph.getKDTree().nearest(eventPoint, 1, [Coordinates.scaleValue(7)]);
-        if (nearestNeighbor && nearestNeighbor.length !== 0) {
-            this.graph.getPointMapping().get(nearestNeighbor[0][0])?.select();
-            this.showInterview();
+        const nearestNeighbor = this.graph.getKDTree().nearest(eventPoint, 1, [Coordinates.scaleValue(3.5)]);
+        if (this.doesNeighborExist(nearestNeighbor)) {
+            const node : InterviewNode = this.graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode;
+            node.select();
+            this.props.openInterview(node);
             window.localStorage.setItem("graph", this.graph.toString());
         }
         Mouse.setMouseButtonDown(Mouse.Buttons.Left);
+    }
+
+    private doesNeighborExist(nearestNeighbor : any) {
+        if (this.graph == null) {
+            throw new Error("Graph not generated yet");
+        }
+        return nearestNeighbor && nearestNeighbor.length !== 0 && this.graph.getPointMapping().has(nearestNeighbor[0][0]);
     }
 
     private updateMousePosition(event : MouseEvent) {
@@ -251,29 +276,12 @@ export default class Net extends React.Component<{}, IState> {
         this.context.restore();
     }
 
-    public showInterview() {
-        this.setState({
-            showInterview: true
-        })
-    }
-
-    public hideInterview() {
-        this.setState({
-            showInterview: false
-        })
-    }
-
     public render() {
         return (
             <div className="net-container">
                 <div ref="nodeLayer" id="node-layer">
                     <canvas ref="canvas" id="net"></canvas>
                 </div>
-                {this.state.showInterview ? <InterviewDisplay
-					title={"title"}
-                    text={"text"}
-                    closeHandler={this.hideInterview}
-					imageSource={"https://via.placeholder.com/500"}></InterviewDisplay> : null}
             </div>
         )
     }
