@@ -31,9 +31,8 @@ def post_comment(request,pk):
 
 def get_node_comment(request,pk):
       _node= get_object_or_404(Node,pk=pk)
-
-      comments = _node.comments
-      data = serializers.serialize("json", comments, fields=("name", "comment"))
+      comments = _node.comments.all()
+      data = serializers.serialize("json", comments, fields=("name", "message"))
       return JsonResponse(data,safe=False)
 
 
