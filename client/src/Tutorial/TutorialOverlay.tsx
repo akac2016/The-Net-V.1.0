@@ -4,6 +4,7 @@ import FadeMountTransition from "../Animation/FadeMountTransition";
 import slideTheme from "../Theme/SlideTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TutorialView from "./TutorialView";
+import Button from "../Theme/Button";
 
 const Overlay : any = styled.div`
 position: absolute;
@@ -16,6 +17,7 @@ justify-content: center;
 `;
 
 const Modal : any = styled.div`
+position:relative;
 background-color: ${slideTheme.colors.background.main};
 width: 100%;
 height: 250px;
@@ -26,16 +28,18 @@ box-shadow: 0px 0px 5px 5px black;
 `;
 
 interface IProps {
+    closeTutorial: () => void;
     isShowing: boolean;
-    hasNavigated: boolean;
+    completedTutorialName: string;
+    currentTutorialName: string;
+    disableNotification: () => void;
 }
 
-// Transition fr
-
-// Click and Drag
-// Highlight Node
-// Click Node
-// Add yourself to the net
+const CloseButtonContainer : any = styled.div`
+position: absolute;
+top: 0;
+right: 25px;
+`;
 
 export default class TutorialOverlay extends React.Component<IProps, {}> {
     public render() {
@@ -43,7 +47,14 @@ export default class TutorialOverlay extends React.Component<IProps, {}> {
             <FadeMountTransition isShowing={this.props.isShowing} transitionDuration={4000} unMountOnExit>
                 <Overlay>
                     <Modal>
-                        <TutorialView/>
+                        <CloseButtonContainer>
+                            <Button onClick={this.props.closeTutorial} textColor="white" backgroundColor="black">X</Button>
+                        </CloseButtonContainer>
+                        <TutorialView
+                            currentTutorialName={this.props.currentTutorialName}
+                            completedTutorialName={this.props.completedTutorialName}
+                            disableNotification={this.props.disableNotification}
+                            />
                     </Modal>
                 </Overlay>
             </FadeMountTransition>

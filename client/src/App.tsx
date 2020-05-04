@@ -12,9 +12,9 @@ import NetContainer from './Net/NetContainer';
 library.add(faChevronRight, faChevronLeft, faCheck)
 
 // TODO
-// Add tutorial
 // Add a way to add people to the net
 // Add admin panel
+// About panel
 // Upgrade net animation
 
 interface IState {

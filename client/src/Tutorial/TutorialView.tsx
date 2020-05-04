@@ -1,47 +1,47 @@
 import React from "react";
 import Tutorial from "./Tutorial";
 import TutorialProgress from "./TutorialProgress";
-import TutorialInfo from "./TutorialInfo";
-
-interface IState {
-    tutorialInfos: TutorialInfo[];
-    currentTutorial: number
-}
+import TutorialManager from "./TutorialManager";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components";
 
 interface IProps {
-    hasClicked: boolean;
-    hasHovered: boolean;
-    hasNavigated: boolean;
-    hasZoomed: boolean;
+    completedTutorialName: string;
+    currentTutorialName: string;
+    disableNotification: () => void;
 }
 
-export default class TutorialView extends React.Component<IProps, IState> {
-    constructor(props : IProps) {
-        super(props);
-        this.state = {
-            tutorialInfos: [
-                new TutorialInfo("Navigation", "Click and drag to navigate the net.")
-            ],
-            currentTutorial: 0
-        }
-    }
-    
-    public componentWillReceiveProps(props : IProps) {
-        
-    }
+const IconCircle : any = styled.div`
+border: 5px solid white;
+border-radius: 100%;
+width: 100px;
+height: 100px;
+margin: 0 auto;
+padding-top: 10px;
+padding-left: 10px;
+`;
 
+export default class TutorialView extends React.Component<IProps, {}> {
     public render() {
-        return (
-            <>
-                <Tutorial tutorial={this.state.tutorialInfos[this.state.currentTutorial]}/>
-                <TutorialProgress 
-                    total={this.state.tutorialInfos.length} 
-                        current={this.state.currentTutorial}/>
-            </>
-        )
-    }
-
-    public incrementState() {
-
+        if (this.props.completedTutorialName !== this.props.currentTutorialName) {
+            return (
+                <>
+                    <Tutorial tutorial={TutorialManager.getCurrentTutorial()}/>
+                    <TutorialProgress 
+                        total={TutorialManager.getTotalTutorials()} 
+                            current={TutorialManager.getCurrentTutorialIndex() + 1}/>
+                </>
+            )
+        } else {
+            this.props.disableNotification()
+            return (
+                <>
+                    <h1>Great job!</h1>
+                    <IconCircle>
+                        <FontAwesomeIcon icon="check" color="green" size="5x"/>
+                    </IconCircle>
+                </>
+            );
+        }
     }
 }

@@ -6,6 +6,7 @@ import TutorialInfo from "./TutorialInfo";
 const TutorialHeader : any = styled.h1`
 font-size: 48px;
 font-weight: 800;
+text-transform: capitalize;
 `
 
 interface IProps {

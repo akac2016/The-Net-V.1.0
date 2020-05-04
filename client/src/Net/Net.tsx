@@ -6,11 +6,12 @@ import InterviewGraphFactory from "./InterviewGraphFactory";
 import { Mouse } from "./Mouse";
 import { Coordinates } from "./Coordinates";
 import InterviewNode from "./InterviewNode";
+import TutorialManager from "../Tutorial/TutorialManager";
 // import Axios from "axios";
 
 interface IProps {
     openInterview: (node : InterviewNode) => void;
-    navigationListener: () => void;
+    tutorialNotifier: (name : string) => void;
 }
 
 interface IState {
@@ -162,6 +163,7 @@ export default class Net extends React.Component<IProps, IState> {
         Coordinates.setWorldOrigin(Mouse.getWorldPosition());
         Coordinates.setScreenOrigin(Mouse.getScreenPosition())
         Mouse.setWorldPosition(Coordinates.screenToWorldPoint(Mouse.getScreenPosition()));
+        this.completeTutorial("zoom");
         this.draw()
     }
 
@@ -183,6 +185,7 @@ export default class Net extends React.Component<IProps, IState> {
             const node : InterviewNode = this.graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode;
             node.hover();
             (document.getElementById("net") as any).style.cursor = "pointer";
+            this.completeTutorial("hover");
         } else {
             for (let vertex of this.graph.vertexes()) {
                 vertex.unhover();
@@ -205,10 +208,15 @@ export default class Net extends React.Component<IProps, IState> {
             const node : InterviewNode = this.graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode;
             node.select();
             this.props.openInterview(node);
+            this.completeTutorial("click");
             window.localStorage.setItem("graph", this.graph.toString());
         }
         Mouse.setMouseButtonDown(Mouse.Buttons.Left);
-        this.props.navigationListener();
+        this.completeTutorial("navigation");
+    }
+
+    private completeTutorial(name: string) {
+        this.props.tutorialNotifier(name);
     }
 
     private doesNeighborExist(nearestNeighbor : any) {
