@@ -6,7 +6,6 @@ import InterviewGraphFactory from "./InterviewGraphFactory";
 import { Mouse } from "./Mouse";
 import { Coordinates } from "./Coordinates";
 import InterviewNode from "./InterviewNode";
-import TutorialManager from "../Tutorial/TutorialManager";
 // import Axios from "axios";
 
 interface IProps {

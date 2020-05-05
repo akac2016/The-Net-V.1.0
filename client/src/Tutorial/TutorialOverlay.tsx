@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import FadeMountTransition from "../Animation/FadeMountTransition";
 import slideTheme from "../Theme/SlideTheme";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TutorialView from "./TutorialView";
 import Button from "../Theme/Button";
 
@@ -44,7 +43,7 @@ right: 25px;
 export default class TutorialOverlay extends React.Component<IProps, {}> {
     public render() {
         return (
-            <FadeMountTransition isShowing={this.props.isShowing} transitionDuration={4000} unMountOnExit>
+            <FadeMountTransition isShowing={this.props.isShowing} transitionDuration={500} unMountOnExit>
                 <Overlay>
                     <Modal>
                         <CloseButtonContainer>

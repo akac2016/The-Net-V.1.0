@@ -12,10 +12,12 @@ import NetContainer from './Net/NetContainer';
 library.add(faChevronRight, faChevronLeft, faCheck)
 
 // TODO
-// Add a way to add people to the net
+// About
+// Title That appears when hovering a node
+// Fix touch scrolling
+// Add pinch event for scrolling
+// Hook up to backend
 // Add admin panel
-// About panel
-// Upgrade net animation
 
 interface IState {
 	hasLoaded: boolean;
@@ -49,7 +51,9 @@ export default class App extends React.Component<{}, IState> {
 	public render() {
 		return (
 			<div className="App">
-				<LoadingScreen transitionDuration={750} hasLoaded={this.state.hasLoaded}/>
+				<LoadingScreen 
+					transitionDuration={750} 
+					hasLoaded={this.state.hasLoaded}/>
 				<PrincipleSlideShow 
 					transitionDuration={500} 
 					isShowing={!this.state.hasExitedSlides}

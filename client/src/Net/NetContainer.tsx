@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Net from "./Net";
 import InterviewNode from "./InterviewNode";
-import Tutorial from "../Tutorial/TutorialOverlay";
 import FadeMountTransition from "../Animation/FadeMountTransition";
 import TutorialOverlay from "../Tutorial/TutorialOverlay";
 import TutorialManager from "../Tutorial/TutorialManager";
+import ActionMenuOverlay from "./ActionMenu/ActionMenuOverlay";
 
 const Container = styled.div`
 top: 0;
@@ -36,7 +36,7 @@ export default class NetContainer extends React.Component<IProps, IState> {
             displayingSuccess: false,
             name: "",
             currentTutorial: TutorialManager.getCurrentTutorial().title,
-            isDoingTutorial: true
+            isDoingTutorial: window.localStorage.getItem("hasClosedTutorial") ? false : true
         };
         this.tutorialNotifier = this.tutorialNotifier.bind(this);
         this.disableNotification = this.disableNotification.bind(this);
@@ -47,6 +47,7 @@ export default class NetContainer extends React.Component<IProps, IState> {
         return (
             <FadeMountTransition transitionDuration={1000} isShowing={this.props.isShowing}>
                 <Container>
+                    <ActionMenuOverlay/>
                     <TutorialOverlay
                         closeTutorial={this.closeTutorial}
                         disableNotification={this.disableNotification}
@@ -62,13 +63,14 @@ export default class NetContainer extends React.Component<IProps, IState> {
     }
 
     public closeTutorial() {
+        window.localStorage.setItem("hasClosedTutorial", "true");
         this.setState({
             isDoingTutorial: false
         });
     }
 
     public tutorialNotifier(name: string) {
-        if (!this.state.displayingSuccess) {
+        if (!this.state.displayingSuccess && this.state.isDoingTutorial) {
             TutorialManager.getTutorialEmitter(name).complete();
             this.setState({
                 name: name
@@ -77,7 +79,7 @@ export default class NetContainer extends React.Component<IProps, IState> {
     }
 
     public disableNotification() {
-        if (!this.state.displayingSuccess) {
+        if (!this.state.displayingSuccess && this.state.isDoingTutorial) {
             this.setState({
                 displayingSuccess: true
             }, () => {

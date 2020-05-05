@@ -84,7 +84,7 @@ export default class InterviewDisplay extends React.Component<IProps, IState> {
             return null;
         }
         return this.props.interview.text.split("\n").map((paragraph: string, i : number) => {
-            return <InterviewSection isShowing={!this.state.isShowingReminder} isLeftAligned={i % 2 == 0}
+            return <InterviewSection key={i} isShowing={!this.state.isShowingReminder} isLeftAligned={i % 2 === 0}
                         paragraph={paragraph} 
                         url={this.props.interview.imageUrls[i % this.props.interview.imageUrls.length]}/>
         })

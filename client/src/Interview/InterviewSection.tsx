@@ -43,10 +43,12 @@ box-sizing: border-box;
 `;
 
 const Image = styled.img`
-margin: 25px;
-max-width: 400px;
-max-height: 400px;
+width: 80%;
+height: 80%;
+min-width: 300px;
+min-height: 300px;
 border-raidus: 100%;
+margin: 25px 0;
 `;
 
 export default class InterviewSection extends React.Component<IProps, {}> {

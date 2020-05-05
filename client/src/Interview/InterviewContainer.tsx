@@ -29,10 +29,10 @@ export default class InterviewContainer extends React.Component<IProps, {}> {
         return (
             <Container>
                 <Title>{this.props.interview ? this.props.interview.title : ""}</Title>
+                <Button textColor="white" backgroundColor="black" onClick={this.props.closeHandler}>Close</Button>
                 <InterviewWrapper>
                     {this.props.children}
                 </InterviewWrapper>
-                <Button textColor="white" backgroundColor="black" onClick={this.props.closeHandler}>Close</Button>
             </Container>
         )
     }

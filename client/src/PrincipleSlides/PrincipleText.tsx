@@ -1,5 +1,4 @@
 import React from "react";
-import Principles from "./PrinciplesText";
 import Text from "../Theme/Text";
 import CSSAnimator from "../Animation/CSSAnimator";
 import { TextFocusIn } from "../Animation/Animations";
