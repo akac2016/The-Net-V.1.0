@@ -135,6 +135,29 @@ export default class Net extends React.Component<IProps, IState> {
         return context;
     }
 
+    public componentWillUnmount() {
+        if (this.canvas === null) {
+            throw new Error("Canvas has not been mounted yet");
+        }
+        this.canvas.removeEventListener("touchstart", this.touchHandler, true);
+        this.canvas.removeEventListener("touchmove", this.touchHandler, true);
+        this.canvas.removeEventListener("touchend", this.touchHandler, true);
+        this.canvas.removeEventListener("touchcancel", this.touchHandler, true);
+        this.canvas.removeEventListener("pointerdown", this.pointerDownHandler); 
+        this.canvas.removeEventListener("pointermove", this.pointerMoveHandler);
+        this.canvas.removeEventListener("pointerup", this.pointerUpHandler);
+        this.canvas.removeEventListener("pointercancel", this.pointerUpHandler);
+        this.canvas.removeEventListener("pointerout", this.pointerUpHandler);
+        this.canvas.removeEventListener("pointerleave", this.pointerUpHandler);
+        this.canvas.removeEventListener("wheel", this.handleMouseWheel);
+        this.canvas.removeEventListener("mousedown", this.handleMouseMove);
+        this.canvas.removeEventListener("mouseup", this.handleMouseMove);
+        this.canvas.removeEventListener("mouseover", this.handleMouseMove);
+        this.canvas.removeEventListener("mouseout", this.handleMouseMove);
+        this.canvas.removeEventListener("mousemove", this.handleMouseMove);
+        window.removeEventListener("resize", this.handleWindowResize);
+    }
+
     private initializeListeners() {
         if (this.canvas === null) {
             throw new Error("Canvas has not been mounted yet");
@@ -339,6 +362,9 @@ export default class Net extends React.Component<IProps, IState> {
                 this.props.openInterview(node);
                 this.completeTutorial("click");
                 window.localStorage.setItem("graph", this.graph.toString());
+                this.setState({
+                    displayTooltip: false
+                });
             }
         }
         Mouse.setMouseButtonDown(Mouse.Buttons.Left);
