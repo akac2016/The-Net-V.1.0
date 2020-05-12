@@ -19,6 +19,7 @@ padding: 25px;
 height: 50%;
 transition: all 0.25s ease;
 box-sizing: border-box;
+overflow: scroll;
 
 &:hover {
     cursor: text;

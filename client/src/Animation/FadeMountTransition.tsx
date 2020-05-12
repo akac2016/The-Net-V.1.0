@@ -19,7 +19,7 @@ const transitionStyles : any = {
 };
 
 const defaultStyles : any = {
-    opacity: 0
+    opacity: 0,
 }
 
 export default class FadeMountTransition extends React.Component<IProps, IState> {
@@ -38,7 +38,7 @@ export default class FadeMountTransition extends React.Component<IProps, IState>
 
     public render() {
         return (
-            <CSSTransition unmountOnExit={this.props.unMountOnExit} in={this.state.isShowing} timeout={this.props.transitionDuration}>
+            <CSSTransition appear unmountOnExit={this.props.unMountOnExit} in={this.state.isShowing} timeout={this.props.transitionDuration}>
                 {state =>
                     <div style={{
                         transition: `${this.props.transitionDuration}ms`, 

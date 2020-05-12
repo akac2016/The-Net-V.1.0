@@ -29,6 +29,7 @@ margin: 0 auto;
 
 const Text : any = styled.h1`
 margin: 0 auto;
+text-transform: capitalize;
 padding: 150px 15px;
 color: ${loadingScreen.colors.text.primary};
 font-size: 36px;

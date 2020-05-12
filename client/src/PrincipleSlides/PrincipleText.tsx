@@ -3,18 +3,25 @@ import Text from "../Theme/Text";
 import CSSAnimator from "../Animation/CSSAnimator";
 import { TextFocusIn } from "../Animation/Animations";
 import DefaultPrinciples from "./PrinciplesText";
+import styled from "styled-components";
 
 interface IProps {
     keyword: string
 }
 
+const TextWrapper = styled.div`
+margin: 25px 55px;
+`;
+
 export default class PrincipleText extends React.Component<IProps, {}> {
     public render() {
         return (
             <CSSAnimator animation={TextFocusIn(1, 0)}>
-                <Text>
-                    {this.getTextComponents()}
-                </Text>  
+                <TextWrapper>
+                    <Text>
+                        {this.getTextComponents()}
+                    </Text>  
+                </TextWrapper>
             </CSSAnimator>        
         )
     }

@@ -12,12 +12,8 @@ import NetContainer from './Net/NetContainer';
 library.add(faChevronRight, faChevronLeft, faCheck)
 
 // TODO
-// About
-// Title That appears when hovering a node
-// Fix touch scrolling
-// Add pinch event for scrolling
+// mobile transitions
 // Hook up to backend
-// Add admin panel
 
 interface IState {
 	hasLoaded: boolean;

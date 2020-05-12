@@ -2,6 +2,7 @@ import React from "react";
 import { Transition } from 'react-transition-group'
 import styled from "styled-components";
 import Slide from "./Slide";
+import FadeMountTransition from "../Animation/FadeMountTransition";
 
 interface IProps {
     isPrimary?: boolean;
@@ -26,16 +27,20 @@ transition: ${(props : IProps) => props.transitionDuration ?
 export default class SlideWrapper extends React.Component<IProps, {}> {
     public render() {
         return (
-            <Transition
-                in={this.props.isActive}            
-                unmountOnExit
-                timeout={this.props.transitionDuration}>
-                    {state => 
-                        <Wrapper transitionDuration={this.props.transitionDuration} style={{ ...transitionStyles[state]}}>
-                            {this.injectTransitionDuration()}
-                        </Wrapper>
-                    }
-            </Transition>
+            <FadeMountTransition isShowing={this.props.isActive} unMountOnExit transitionDuration={this.props.transitionDuration}>
+                {/* <Wrapper transitionDuration={this.props.transitionDuration} style={{ ...transitionStyles[state]}}> */}
+                {this.injectTransitionDuration()}
+                {/* </Wrapper> */}
+            </FadeMountTransition>
+            
+            // <Transition
+            //     in={this.props.isActive}            
+            //     unmountOnExit
+            //     timeout={this.props.transitionDuration}>
+            //         {state => 
+                        
+            //         }
+            // </Transition>
         )
     }
 

@@ -6,7 +6,21 @@ import InterviewGraphFactory from "./InterviewGraphFactory";
 import { Mouse } from "./Mouse";
 import { Coordinates } from "./Coordinates";
 import InterviewNode from "./InterviewNode";
+import NetToolTip from "./NetTooltip";
+import styled from "styled-components";
 // import Axios from "axios";
+
+const Output = styled.output`
+position: absolute;
+top: 0;
+left: 0;
+width: 100vw;
+height: 0;
+font-size: 12px;
+background-color: white;
+z-index: 2;
+opacity: 0;
+`;
 
 interface IProps {
     openInterview: (node : InterviewNode) => void;
@@ -14,9 +28,11 @@ interface IProps {
 }
 
 interface IState {
-    canvas: HTMLCanvasElement | null;
-    context: CanvasRenderingContext2D | null;
     interviews: string[];
+    tooltipX: number,
+    tooltipY: number,
+    displayTooltip: boolean,
+    tooltipValue: string
 }
 
 export default class Net extends React.Component<IProps, IState> {
@@ -24,6 +40,8 @@ export default class Net extends React.Component<IProps, IState> {
     canvas : HTMLCanvasElement | null;
     graph: InterviewGraph | null;
     interviews: string[];
+    eventCache: PointerEvent[];
+    prevDifference: number;
 
     constructor(props : any) {
         super(props);
@@ -31,6 +49,8 @@ export default class Net extends React.Component<IProps, IState> {
         this.canvas = null;
         this.graph = null;
         this.interviews = [];
+        this.eventCache = [];
+        this.prevDifference = -1;
         if (window.localStorage.getItem("graph")) {
             const graphData = JSON.parse(window.localStorage.getItem("graph") as string); 
             this.graph = new InterviewGraph(graphData)
@@ -38,12 +58,19 @@ export default class Net extends React.Component<IProps, IState> {
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleWindowResize = this.handleWindowResize.bind(this);
+        this.pointerDownHandler = this.pointerDownHandler.bind(this);
+        this.pointerMoveHandler = this.pointerMoveHandler.bind(this);
+        this.pointerUpHandler = this.pointerUpHandler.bind(this);
         this.draw = this.draw.bind(this);
+        this.getContext = this.getContext.bind(this);
+        this.getCanvas = this.getCanvas.bind(this);
 
         this.state = {
-            canvas: null,
-            context: null,
             interviews: [],
+            tooltipX: 0,
+            tooltipY: 0,
+            tooltipValue: "",
+            displayTooltip: false,
         }
     }
 
@@ -69,7 +96,7 @@ export default class Net extends React.Component<IProps, IState> {
     private async getInterviewGraphData() : Promise<string[]> {
         // const response = await Axios.get("/path/to/interview/graph/data");
         const dummyData : string[] = [];
-        for (let i = 0; i < 300; i++) {
+        for (let i = 0; i < 100; i++) {
             dummyData.push(i.toString());
         }
         return dummyData;
@@ -115,7 +142,13 @@ export default class Net extends React.Component<IProps, IState> {
         this.canvas.addEventListener("touchstart", this.touchHandler, true);
         this.canvas.addEventListener("touchmove", this.touchHandler, true);
         this.canvas.addEventListener("touchend", this.touchHandler, true);
-        this.canvas.addEventListener("touchcancel", this.touchHandler, true); 
+        this.canvas.addEventListener("touchcancel", this.touchHandler, true);
+        this.canvas.addEventListener("pointerdown", this.pointerDownHandler); 
+        this.canvas.addEventListener("pointermove", this.pointerMoveHandler);
+        this.canvas.addEventListener("pointerup", this.pointerUpHandler);
+        this.canvas.addEventListener("pointercancel", this.pointerUpHandler);
+        this.canvas.addEventListener("pointerout", this.pointerUpHandler);
+        this.canvas.addEventListener("pointerleave", this.pointerUpHandler);
         this.canvas.addEventListener("wheel", this.handleMouseWheel);
         this.canvas.addEventListener("mousedown", this.handleMouseMove);
         this.canvas.addEventListener("mouseup", this.handleMouseMove);
@@ -125,30 +158,105 @@ export default class Net extends React.Component<IProps, IState> {
         window.addEventListener("resize", this.handleWindowResize);
     }
 
+    private logTouchEvents(prefix : string, event : PointerEvent) {
+        let output = document.getElementsByTagName("output")[0];
+        let data = `${prefix}: pointerID = ${event.pointerId}; pointerType = ${event.pointerType}; isPrimary = ${event.isPrimary}\n`;
+        output.innerHTML += data;
+    }
+
+    private clearLog() {
+        let output = document.getElementsByTagName("output")[0];
+        output.innerHTML = "";
+    }
+
+    private pointerDownHandler(event : PointerEvent) {
+        this.eventCache.push(event);
+        this.clearLog();
+        this.logTouchEvents("pointerDown", event);
+    }
+
+    private pointerUpHandler(event : PointerEvent) {
+        this.clearLog();
+        this.logTouchEvents(event.type, event);
+        this.removeEventFromCache(event);
+        if (this.eventCache.length < 2) {
+            this.prevDifference = -1;
+        }
+    }
+
+    private removeEventFromCache(event : PointerEvent) {
+        for (let i = 0; i < this.eventCache.length; i++) {
+            if (this.eventCache[i].pointerId === event.pointerId) {
+                this.eventCache.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    private pointerMoveHandler(event : PointerEvent) {
+        this.clearLog();
+        this.logTouchEvents("pointerMove", event);
+        for (let i = 0; i < this.eventCache.length; i++) {
+            if (this.eventCache[i].pointerId === event.pointerId) {
+                this.eventCache[i] = event;
+                break;
+            }
+        }
+        
+        if (this.eventCache.length === 2) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            let currentDifference = Math.abs(this.eventCache[0].clientX - this.eventCache[1].clientX);
+            if (this.prevDifference > 0) {
+                if (currentDifference > this.prevDifference) {
+                    this.clearLog();
+                    this.logTouchEvents("Pinch moving OUT -> Zoom in", event)
+                    Coordinates.setScale(Math.max(0.3, Coordinates.getScale() * (1 / Coordinates.ScaleMultiplier)));
+                }
+                if (currentDifference < this.prevDifference) {
+                    this.clearLog();
+                    this.logTouchEvents("Pinch moving IN -> Zoom out", event)
+                    Coordinates.setScale(Math.min(1.5, Coordinates.getScale() * Coordinates.ScaleMultiplier));
+                }
+                Coordinates.setWorldOrigin(Mouse.getWorldPosition());
+                Coordinates.setScreenOrigin(Mouse.getScreenPosition())
+                Mouse.setWorldPosition(Coordinates.screenToWorldPoint(Mouse.getScreenPosition()));
+                this.completeTutorial("zoom");
+                this.draw()
+            }
+            this.prevDifference = currentDifference;
+        }
+    }
+
     private touchHandler(event: TouchEvent) {
-        let touches = event.changedTouches,
+        if (event.touches.length === 1) {
+            let touches = event.changedTouches,
             first = touches[0],
             type = "";
-        switch(event.type)
-        {
-            case "touchstart": type = "mousedown"; break;
-            case "touchmove":  type = "mousemove"; break;        
-            case "touchend":   type = "mouseup";   break;
-            default:           return;
+            switch(event.type)
+            {
+                case "touchstart": type = "mousedown"; break;
+                case "touchmove":  type = "mousemove"; break;        
+                case "touchend":   type = "mouseup";   break;
+                default:           return;
+            }
+
+            if (type === "mousedown") {
+                Mouse.setScreenPosition(new Point(first.clientX, first.clientY));
+                Mouse.setWorldPosition(Coordinates.screenToWorldPoint(Mouse.getScreenPosition()))
+            }
+            // initMouseEvent(type, canBubble, cancelable, view, clickCount, 
+            //                screenX, screenY, clientX, clientY, ctrlKey, 
+            //                altKey, shiftKey, metaKey, button, relatedTarget);
+            var simulatedEvent = document.createEvent("MouseEvent");
+            simulatedEvent.initMouseEvent(type, true, true, window, 1, 
+                                        first.screenX, first.screenY, 
+                                        first.clientX, first.clientY, false, 
+                                        false, false, false, 0, null);
+
+            first.target.dispatchEvent(simulatedEvent);
+            event.preventDefault();
         }
-
-        // initMouseEvent(type, canBubble, cancelable, view, clickCount, 
-        //                screenX, screenY, clientX, clientY, ctrlKey, 
-        //                altKey, shiftKey, metaKey, button, relatedTarget);
-
-        var simulatedEvent = document.createEvent("MouseEvent");
-        simulatedEvent.initMouseEvent(type, true, true, window, 1, 
-                                    first.screenX, first.screenY, 
-                                    first.clientX, first.clientY, false, 
-                                    false, false, false, 0/*left*/, null);
-
-        first.target.dispatchEvent(simulatedEvent);
-        event.preventDefault();
     }
 
     private handleMouseWheel(event : WheelEvent) {
@@ -182,10 +290,20 @@ export default class Net extends React.Component<IProps, IState> {
         const nearestNeighbor = this.graph.getKDTree().nearest(this.getClickPoint(event), 1, [Coordinates.scaleValue(3.5)]);
         if (nearestNeighbor && nearestNeighbor.length !== 0) {
             const node : InterviewNode = this.graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode;
+            const position = Coordinates.screenToWorldPoint(node.getCenter());
+            this.setState({
+                tooltipX: position.getX(),
+                tooltipY: position.getY(),
+                displayTooltip: true,
+                tooltipValue: node.getInterview().title
+            });
             node.hover();
             (document.getElementById("net") as any).style.cursor = "pointer";
             this.completeTutorial("hover");
         } else {
+            this.setState({
+                displayTooltip: false
+            });
             for (let vertex of this.graph.vertexes()) {
                 vertex.unhover();
             }
@@ -205,10 +323,23 @@ export default class Net extends React.Component<IProps, IState> {
         const nearestNeighbor = this.graph.getKDTree().nearest(eventPoint, 1, [Coordinates.scaleValue(3.5)]);
         if (this.doesNeighborExist(nearestNeighbor)) {
             const node : InterviewNode = this.graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode;
-            node.select();
-            this.props.openInterview(node);
-            this.completeTutorial("click");
-            window.localStorage.setItem("graph", this.graph.toString());
+            if (this.eventCache.length === 1 && !node.isHovered) {
+                const position = Coordinates.screenToWorldPoint(node.getCenter());
+                this.setState({
+                    tooltipX: position.getX(),
+                    tooltipY: position.getY(),
+                    displayTooltip: true,
+                    tooltipValue: node.getInterview().title
+                });
+                node.hover();
+                (document.getElementById("net") as any).style.cursor = "pointer";
+                this.completeTutorial("hover");
+            } else {
+                node.select();
+                this.props.openInterview(node);
+                this.completeTutorial("click");
+                window.localStorage.setItem("graph", this.graph.toString());
+            }
         }
         Mouse.setMouseButtonDown(Mouse.Buttons.Left);
         this.completeTutorial("navigation");
@@ -287,7 +418,15 @@ export default class Net extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <canvas ref="canvas" id="net"></canvas>
+            <>
+                <NetToolTip 
+                    x={this.state.tooltipX} 
+                    y={this.state.tooltipY} 
+                    isShowing={this.state.displayTooltip} 
+                    title={this.state.tooltipValue} />
+                <canvas ref="canvas" id="net"></canvas>
+                <Output/>
+            </>
         )
     }
 }

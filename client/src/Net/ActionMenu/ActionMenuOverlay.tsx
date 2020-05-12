@@ -28,12 +28,48 @@ background-color: ${slideTheme.colors.background.main};
 
 const ToggleContainer : any = styled.div`
 position: absolute;
-left: -80px;
+left: -70px;
 top: 50%;
-margin-top: -75px;
-display: none;
-@media screen and (min-width: 850px) {
-    display: block;
+`;
+
+const AboutContainer : any = styled.div`
+width: 100%;
+height: auto;
+min-height: 100px;
+bottom: 0;
+position: absolute;
+left: 0;
+`;
+
+const AboutPanel : any = styled.div`
+box-sizing: border-box;
+border-top: 3px solid black;
+text-align: left;
+padding: 5px;
+margin: 5px;
+margin-left: 15px;
+
+@media all and (min-width; 800px) {
+    padding: 10px;
+    margin: 10px;
+}
+
+`;
+
+const AboutList : any = styled.ul`
+text-align: left;
+list-style: none;
+line-height: 2.0em;
+`;
+
+const ProfileLink : any = styled.a`
+color: black;
+transition: all 0.5s ease;
+display: block;
+
+&:hover {
+    color: blue;
+    transform: scale(1.1);
 }
 `;
 
@@ -65,6 +101,28 @@ export default class ActionMenuOverlay extends React.Component<{}, IState> {
                             </Button>
                         </ToggleContainer>
                         <Button onClick={this.toggleForm} textColor="white" backgroundColor="black">Add Your Self To The Net</Button>
+                        <AboutContainer>
+                            <AboutPanel>
+                                Created By:
+                                <AboutList>
+                                    <li><ProfileLink href="https://www.linkedin.com/in/ali-kapadia/">Ali Kapadia</ProfileLink ></li>
+                                </AboutList>
+                            </AboutPanel>
+                            <AboutPanel>
+                                Developed By:
+                                <AboutList>
+                                    <li><ProfileLink href="https://www.linkedin.com/in/evancoulson/"><b>Frontend:</b> Evan Coulson</ProfileLink ></li>
+                                    <li><ProfileLink href="https://www.linkedin.com/in/samuelnunoo/"><b>Backend:</b> Samuel Nunoo</ProfileLink ></li>
+                                </AboutList>
+                            </AboutPanel>
+                            <AboutPanel>
+                                Desgined By:
+                                <AboutList>
+                                    <li><ProfileLink href="https://www.linkedin.com/in/hannah-a-586758161/">Hannah Avalos</ProfileLink ></li>
+                                    <li><ProfileLink href="https://www.linkedin.com/in/salih-erdal-739b53106/">Salih Erdal</ProfileLink ></li>
+                                </AboutList>
+                            </AboutPanel>
+                        </AboutContainer>
                     </Container>
                 </Overlay>
             </>

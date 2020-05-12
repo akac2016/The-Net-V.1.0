@@ -26,7 +26,12 @@ export default class InterviewGraph {
                 graphData.nodeData[id].center.x,
                 graphData.nodeData[id].center.y
             )
-            const node : InterviewNode = new InterviewNode(id, center, graphData.nodeData[id].radius);
+            const node : InterviewNode = new InterviewNode(
+                id, 
+                graphData.nodeData[id].interview, 
+                center, 
+                graphData.nodeData[id].radius
+            );
             if (graphData.nodeData[id].wasSelected) {
                 node.select();
             }

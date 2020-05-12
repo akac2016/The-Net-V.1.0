@@ -10,7 +10,7 @@ width: 100%;
 height: 100%;
 position: absolute;
 z-index: 2;
-background-color: ${SlideTheme.colors.background.secondary};
+background-color: ${SlideTheme.colors.background.main};
 `;
 
 interface IProps {

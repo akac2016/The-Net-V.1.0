@@ -28,7 +28,15 @@ export default class InterviewGraphFactory {
     }
 
     private createNode(graph : InterviewGraph, id : string) : InterviewNode {
-        return new InterviewNode(id, this.getRandomPoint(graph), Radius);
+        return new InterviewNode(id, {
+            title: "test",
+            text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Felis eget velit aliquet sagittis id consectetur. Magna fringilla urna porttitor rhoncus dolor purus non. Urna condimentum mattis pellentesque id nibh. Mi sit amet mauris commodo quis. Enim blandit volutpat maecenas volutpat blandit aliquam etiam erat velit. Quis risus sed vulputate odio ut. Enim tortor at auctor urna nunc id cursus metus aliquam. Neque aliquam vestibulum morbi blandit. Urna neque viverra justo nec ultrices dui sapien eget. Eget nunc scelerisque viverra mauris. Fermentum et sollicitudin ac orci phasellus egestas tellus rutrum. Pretium lectus quam id leo in vitae turpis massa. Non blandit massa enim nec dui nunc mattis. Sollicitudin aliquam ultrices sagittis orci a scelerisque purus semper eget. Aenean euismod elementum nisi quis eleifend quam.
+            Amet dictum sit amet justo donec enim diam vulputate ut. Justo eget magna fermentum iaculis eu non diam phasellus vestibulum. Ultrices mi tempus imperdiet nulla malesuada pellentesque. Sed viverra ipsum nunc aliquet bibendum. Pretium fusce id velit ut tortor pretium viverra suspendisse potenti. Lectus magna fringilla urna porttitor rhoncus dolor purus. Sit amet purus gravida quis blandit. Id ornare arcu odio ut sem nulla pharetra diam. Quis enim lobortis scelerisque fermentum. Varius morbi enim nunc faucibus a pellentesque sit amet porttitor.
+            Feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi. Nisl nisi scelerisque eu ultrices vitae auctor eu augue ut. Nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Molestie at elementum eu facilisis sed. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Vivamus arcu felis bibendum ut tristique et egestas quis ipsum. Amet consectetur adipiscing elit pellentesque habitant morbi tristique senectus et. Pretium nibh ipsum consequat nisl vel pretium lectus. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Sociis natoque penatibus et magnis dis parturient montes. Scelerisque felis imperdiet proin fermentum leo vel orci porta. Blandit aliquam etiam erat velit scelerisque in dictum non. Et egestas quis ipsum suspendisse ultrices. Amet aliquam id diam maecenas ultricies. Viverra nam libero justo laoreet sit amet cursus sit. Suspendisse ultrices gravida dictum fusce ut placerat orci. Ipsum suspendisse ultrices gravida dictum fusce ut placerat orci.
+            Porttitor leo a diam sollicitudin tempor. Sit amet mauris commodo quis. Egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. Vitae aliquet nec ullamcorper sit amet risus. Dui nunc mattis enim ut tellus elementum sagittis vitae. Semper eget duis at tellus at. Posuere sollicitudin aliquam ultrices sagittis orci a. Laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt eget. Cursus turpis massa tincidunt dui ut ornare lectus sit amet. Quis risus sed vulputate odio ut enim blandit. Diam in arcu cursus euismod quis viverra nibh cras pulvinar. Ante metus dictum at tempor commodo ullamcorper a lacus. Pharetra pharetra massa massa ultricies mi quis. Id diam maecenas ultricies mi eget mauris pharetra et. Interdum velit euismod in pellentesque massa placerat duis ultricies. Nibh sed pulvinar proin gravida hendrerit.
+            Sem viverra aliquet eget sit amet tellus cras. Dolor purus non enim praesent elementum. Vestibulum sed arcu non odio. Ut tristique et egestas quis ipsum. Eget arcu dictum varius duis. Amet mattis vulputate enim nulla. Dignissim sodales ut eu sem integer. Sit amet commodo nulla facilisi nullam vehicula ipsum a arcu. Nunc faucibus a pellentesque sit amet porttitor eget dolor morbi. Elit eget gravida cum sociis natoque penatibus et magnis. Nunc non blandit massa enim nec dui nunc mattis. Id leo in vitae turpis. Nisl nisi scelerisque eu ultrices vitae auctor eu augue ut.`,
+            imageUrls: ["https://via.placeholder.com/350"]
+        }, this.getRandomPoint(graph), Radius);
     }
 
     private getRandomPoint(graph : InterviewGraph) : Point {
@@ -50,8 +58,6 @@ export default class InterviewGraphFactory {
     private generateEdges(graph : InterviewGraph) {
         this.createNearestConnections(graph);
         this.connectSoloNodes(graph);
-        // Todo
-        // this.connectDisjointSets(graph);
     }
 
     private createNearestConnections(graph : InterviewGraph) {
@@ -77,40 +83,5 @@ export default class InterviewGraphFactory {
                 node.connect(graph.getPointMapping().get(nearestNeighbor[0][0]) as InterviewNode);
             }
         }
-    }
-
-    private connectDisjointSets(graph : InterviewGraph) {
-        const parent : string[] = [];
-        const idMapping : Map<string, number> = new Map<string, number>();
-        for (let i = 0; i < graph.size(); i++) {
-            parent[i] = "";
-            idMapping.set(graph.vertexes()[i].getId(), i);
-        }
-        for (let node of graph.vertexes()) {
-            const a: string = this.find(parent, node.getId(), idMapping);
-            for (let edge of node.getEdges()) {
-                const b: string = this.find(parent, edge.getId(), idMapping);
-                this.union(parent, a, b, idMapping);
-            }
-        }
-        console.log(parent);
-    }
-
-    private find(parent : string[], id : string, idMapping : Map<string, number>) : string {
-        if (idMapping.get(id) === undefined) {
-            throw new Error("Unknown interview id");
-        }
-        const index = idMapping.get(id) as number
-        console.log(index, parent[index]);
-        if (parent[index] === "" || parent[index] === id) {
-            return id;
-        }
-        return this.find(parent, parent[index], idMapping);
-    }
-
-    private union(parent : string[], x : string, y : string, idMapping : Map<string, number>) {
-        const xset : number = idMapping.get(this.find(parent, x, idMapping)) as number;
-        const yset : string = this.find(parent, y, idMapping)
-        parent[xset] = yset;
     }
 }

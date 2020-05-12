@@ -34,12 +34,9 @@ export default class PrincipleSlideShow extends React.Component<IProps, IState> 
     public render() {
         return (
             <FadeMountTransition transitionDuration={500} isShowing={this.props.isShowing} unMountOnExit>
-                {this.props.isShowing ?
-                    <SlideShow transitionDuration={this.props.transitionDuration}>
-                        {this.getSlides()}
-                    </SlideShow> : 
-                    null
-                } 
+                <SlideShow transitionDuration={this.props.transitionDuration}>
+                    {this.getSlides()}
+                </SlideShow>
             </FadeMountTransition>
         )
     }
