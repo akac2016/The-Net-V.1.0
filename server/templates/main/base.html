@@ -1,0 +1,21 @@
+
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Net Project</title>
+    {%  block stylesheets %}
+    {% endblock stylesheets %}
+
+
+</head>
+<body>
+{%  block content %}
+{%  endblock content %}
+</body>
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/form_submission.js' %}" ></script>
+{% endblock scripts %}
+</html>
