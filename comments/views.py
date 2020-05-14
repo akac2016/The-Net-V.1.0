@@ -9,9 +9,6 @@ from .models import Comment
 
 
 
-
-
-
 # Post Comment
 def post_comment(request,pk):
 
@@ -26,9 +23,8 @@ def post_comment(request,pk):
        comment_form = CommentForm()
     return render(request,"main/comment.html",{'form':comment_form})
 
-#
 
-
+#Get Comments for Node
 def get_node_comment(request,pk):
       _node= get_object_or_404(Node,pk=pk)
       comments = _node.comments.all()
