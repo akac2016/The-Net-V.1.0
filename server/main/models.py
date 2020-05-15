@@ -3,7 +3,7 @@ from django.utils.html import format_html
 
 # Create your models here.
 class Node(models.Model):
-    name = models.CharField(max_length=30,default='')
+    name = models.CharField(max_length=200,default='')
     interview = models.TextField()
     image = models.ImageField()
     #ip = models.GenericIPAddressField()

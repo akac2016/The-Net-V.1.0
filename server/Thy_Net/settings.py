@@ -124,6 +124,14 @@ STATICFILES_FINDERS = [
 STATIC_URL = '/static/' #Where files from the static ROOT are served during Production
 STATIC_ROOT = os.path.join(BASE_DIR,'static') #The absolute path to the directory where collectstatic will collect files for deploymen
 
+# React App
+REACT_APP_DIR = os.path.join(BASE_DIR, '../client/')
+REACT_STATIC_DIR = [
+    os.path.join(REACT_APP_DIR, 'build', 'static')
+]
 
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_HTTPONLY = False
+CSRF_TRUSTED_ORIGINS = ['localhost:3000']
 
 searched_locations = finders.searched_locations

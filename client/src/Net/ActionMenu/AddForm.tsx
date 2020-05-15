@@ -7,6 +7,7 @@ import Button from "../../Theme/Button";
 import FormEditor from "./FormEditor";
 import FormImageUploader from "./ImageUploader";
 import { ContentState } from "draft-js";
+import Axios from "axios";
 
 interface IProps {
     isShowing: boolean,
@@ -49,7 +50,7 @@ top: 0;
 `;
 
 interface IState {
-    pictures: any[],
+    pictures: File[],
     title: string,
     text: string
 }
@@ -85,8 +86,27 @@ export default class AddForm extends React.Component<IProps, IState> {
         )
     }
 
-    public submit() {
-        console.log(this.state);
+    public async submit() {
+        let formData : FormData = new FormData()
+        formData.append('name', this.state.title);
+        formData.append('interview', this.state.text);
+        formData.append('image', this.state.pictures[0], this.state.pictures[0].name);
+        console.log(await this.getXSRFCookie(), this.state);
+        const res = await fetch('post_form/', {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+            headers: {
+                "X-CSRFToken": await this.getXSRFCookie()
+            }
+        });
+        const payload = await res.json();
+        console.log(payload);
+    }
+
+    private async getXSRFCookie() {
+        let res = await Axios.get('csrf')
+        return res.data.csrfToken;
     }
 
     public handlePictures(pictures: any[]) {

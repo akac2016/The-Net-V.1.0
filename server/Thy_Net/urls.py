@@ -18,14 +18,17 @@ from django.urls import path
 from main import views as main_views
 from users import views as user_views
 from comments import views as comment_views
+from django.conf.urls import url
 
 urlpatterns = [
 
     #Main URLs
-    path('', main_views.home, name='home'),
+    path('', main_views.FrontendAppView.as_view()),
+    path('csrf/', main_views.csrf, name='csrf'),
     path('form/', main_views.node_form, name='new_node'),
     path('post_form/', main_views.form_ajax, name='form_ajax'),
     path("nodes/", main_views.nodes_ajax, name = "nodes"),
+    path("node_image/<int:pk>", main_views.get_node_image, name="node_image"),
 
     #User URLs
     path('admin/', admin.site.urls),

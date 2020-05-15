@@ -8,7 +8,8 @@ import { Coordinates } from "./Coordinates";
 import InterviewNode from "./InterviewNode";
 import NetToolTip from "./NetTooltip";
 import styled from "styled-components";
-// import Axios from "axios";
+import Axios from "axios";
+import Interview from "./Interview";
 
 const Output = styled.output`
 position: absolute;
@@ -28,7 +29,7 @@ interface IProps {
 }
 
 interface IState {
-    interviews: string[];
+    interviews: Interview[];
     tooltipX: number,
     tooltipY: number,
     displayTooltip: boolean,
@@ -39,7 +40,7 @@ export default class Net extends React.Component<IProps, IState> {
     context : CanvasRenderingContext2D | null;
     canvas : HTMLCanvasElement | null;
     graph: InterviewGraph | null;
-    interviews: string[];
+    interviews: Interview[];
     eventCache: PointerEvent[];
     prevDifference: number;
 
@@ -93,14 +94,19 @@ export default class Net extends React.Component<IProps, IState> {
         this.draw()
     }
 
-    private async getInterviewGraphData() : Promise<string[]> {
-        // const response = await Axios.get("/path/to/interview/graph/data");
-        const dummyData : string[] = [];
-        for (let i = 0; i < 100; i++) {
-            dummyData.push(i.toString());
+    private async getInterviewGraphData() : Promise<Interview[]> {
+        const response = await Axios.get("/nodes");
+        const payload = JSON.parse(response.data);
+        const interviews : Interview[] = [];
+        for (let entry of payload) {
+            interviews.push({
+                id: entry.pk.toString(),
+                title: entry.fields.name,
+                text: entry.fields.interview,
+                imageUrls: [entry.fields.image]
+            })
         }
-        return dummyData;
-        // return response.data as string[];
+        return interviews;
     }
 
     private getCanvas() : HTMLCanvasElement {

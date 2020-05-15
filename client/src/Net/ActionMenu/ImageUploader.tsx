@@ -27,11 +27,12 @@ export default class FormImageUploader extends React.Component<IProps, IState> {
 
     public render() {
         return <ImageUploader
+                    singleImage={true}
                     withPreview={true}
                     withIcon={true}
                     buttonText='Choose images'
                     onChange={this.onDrop}
-                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                    imgExtension={['.jpg', '.jpeg', '.gif', '.png', '.gif']}
                     maxFileSize={5242880}
                 />
     }

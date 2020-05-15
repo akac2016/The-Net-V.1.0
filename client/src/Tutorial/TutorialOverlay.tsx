@@ -6,9 +6,9 @@ import TutorialView from "./TutorialView";
 import Button from "../Theme/Button";
 
 const Overlay : any = styled.div`
-position: absolute;
+position: fixed;
 display: flex;
-bottom: 0;
+bottom: 0px;
 height:300px;
 width: 100vw;
 z-index: 2;
@@ -36,8 +36,8 @@ interface IProps {
 
 const CloseButtonContainer : any = styled.div`
 position: absolute;
-top: 0;
-right: 25px;
+top: -2px;
+right: 10px;
 `;
 
 export default class TutorialOverlay extends React.Component<IProps, {}> {
