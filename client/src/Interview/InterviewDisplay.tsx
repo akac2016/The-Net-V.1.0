@@ -19,13 +19,13 @@ interface IState {
 
 const Modal : any = styled.div`
 z-index: 20;
-position: absolute;
+position: fixed ;
 width: 100vw;
 height: 100vh;
 top: 100vh;
 left: 0;
 background-color: #F4EEE6;
-overflow: scroll;
+overflow: hidden;
 animation: slide-up 0.5s linear 0s 1 both;
 `
 

@@ -54,7 +54,8 @@ export default class NetContainer extends React.Component<IProps, IState> {
                         currentTutorialName={this.state.currentTutorial}
                         completedTutorialName={this.state.name}
                         isShowing={this.state.isDoingTutorial}/>
-                    <Net 
+                    <Net
+                        isShowing={this.props.isShowing} 
                         tutorialNotifier={this.tutorialNotifier}
                         openInterview={this.props.openInterview}/>
                 </Container>

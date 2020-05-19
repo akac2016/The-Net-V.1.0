@@ -9,7 +9,7 @@ export default class TutorialManager {
     private static currentTutorialIndex : number = 0;
     private static tutorials : TutorialInfo[] = [
         new TutorialInfo("navigation", "Click and drag to navigate the screen.", "zoom"),
-        new TutorialInfo("zoom", "Use your mouse wheel to scroll in and out.", "hover"),
+        new TutorialInfo("zoom", "Use your mouse wheel or pinch to zoom in and out.", "hover"),
         new TutorialInfo("hover", "Hover over a node whose interview you want to see.", "click"),
         new TutorialInfo("click", "Click on a node to see its interview", "done"),
         new TutorialInfo("done", "You have now completed the tutorial.", "")

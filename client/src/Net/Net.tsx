@@ -26,6 +26,7 @@ opacity: 0;
 interface IProps {
     openInterview: (node : InterviewNode) => void;
     tutorialNotifier: (name : string) => void;
+    isShowing: boolean;
 }
 
 interface IState {
@@ -52,10 +53,10 @@ export default class Net extends React.Component<IProps, IState> {
         this.interviews = [];
         this.eventCache = [];
         this.prevDifference = -1;
-        if (window.localStorage.getItem("graph")) {
-            const graphData = JSON.parse(window.localStorage.getItem("graph") as string); 
-            this.graph = new InterviewGraph(graphData)
-        }
+        // if (window.localStorage.getItem("graph")) {
+        //     const graphData = JSON.parse(window.localStorage.getItem("graph") as string); 
+        //     this.graph = new InterviewGraph(graphData)
+        // }
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleWindowResize = this.handleWindowResize.bind(this);
@@ -89,7 +90,7 @@ export default class Net extends React.Component<IProps, IState> {
         if (this.graph === null) {
             const graphFactory : InterviewGraphFactory = new InterviewGraphFactory(canvasSize);
             this.graph = graphFactory.create(this.interviews);
-            window.localStorage.setItem("graph", this.graph.toString());
+            // window.localStorage.setItem("graph", this.graph.toString());
         }
         this.draw()
     }
@@ -367,7 +368,7 @@ export default class Net extends React.Component<IProps, IState> {
                 node.select();
                 this.props.openInterview(node);
                 this.completeTutorial("click");
-                window.localStorage.setItem("graph", this.graph.toString());
+                // window.localStorage.setItem("graph", this.graph.toString());
                 this.setState({
                     displayTooltip: false
                 });
@@ -450,7 +451,7 @@ export default class Net extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <>
+            <div style={{display: this.props.isShowing ? "block" : "none"}}>
                 <NetToolTip 
                     x={this.state.tooltipX} 
                     y={this.state.tooltipY} 
@@ -458,7 +459,7 @@ export default class Net extends React.Component<IProps, IState> {
                     title={this.state.tooltipValue} />
                 <canvas ref="canvas" id="net"></canvas>
                 <Output/>
-            </>
+            </div>
         )
     }
 }
