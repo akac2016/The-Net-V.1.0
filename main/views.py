@@ -10,7 +10,6 @@ from django.db.models.functions import Cast
 
 #Homepage View
 def home(request):
-    if request.GET  == "GET":
         return render(request,"main/home.html")
 
 #NewNode Form
@@ -43,6 +42,7 @@ class NodeSerializer(serializers.BaseSerializer):
         return{
 
             'name':instance.name,
+            "id": instance.pk,
             'interview': instance.interview,
             'image': instance.image.url
         }
