@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'main',
     'users',
     'comments',
+    'rest_framework',
 
     'storages',
 ]
@@ -77,6 +78,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Thy_Net.wsgi.application'
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 
 # Database
@@ -129,11 +137,14 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_LOCATION = 'static'
 AWS_DEFAULT_ACL = None
+
+
+
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 DEFAULT_FILE_STORAGE = 'Thy_Net.storage_backend.MediaStorage'
-da
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

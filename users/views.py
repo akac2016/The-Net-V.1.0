@@ -38,6 +38,7 @@ def login_view(request):
             messages.error(request,'username or password not correct')
             return redirect('login')
 
+
 #Logout View
 def logout_view(request):
     logout(request)

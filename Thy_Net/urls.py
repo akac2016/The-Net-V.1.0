@@ -18,8 +18,14 @@ from django.urls import path
 from main import views as main_views
 from users import views as user_views
 from comments import views as comment_views
+from rest_framework import routers, serializers
+
+
+
 
 urlpatterns = [
+
+
 
     #Main URLs
     path('', main_views.home, name='home'),
