@@ -18,5 +18,11 @@ class Node(models.Model):
 
 
 
+    def image_url(self):
+        return self.image.url
+
+
+
+
 
 

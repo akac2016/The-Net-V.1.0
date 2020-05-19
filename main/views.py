@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect
 from main.models import Node
 from main.forms import NewNode
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
-from django.core import serializers
+from django.core import  serializers
+from django.db.models.functions import Cast
 
 #Homepage View
 def home(request):
@@ -46,6 +47,8 @@ def form_ajax(request):
 def nodes_ajax(request):
     if request.method == "GET":
         obj = Node.objects.all()
+        image_url = []
+
 
         data = serializers.serialize("json", obj, fields=("name","interview","image"))
         return JsonResponse(data,safe=False)

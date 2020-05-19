@@ -1,8 +1,5 @@
 venv
-Evan's Stuff/client/
-
+.env
 __pycache__
-
 *.sqlite3
 .idea
-.env
