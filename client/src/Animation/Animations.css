@@ -1,0 +1,157 @@
+@-webkit-keyframes tracking-in-contract {
+    0% {
+        letter-spacing: 1em;
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        letter-spacing: normal;
+        opacity: 1;
+    }
+}
+
+@keyframes tracking-in-contract {
+    0% {
+        letter-spacing: 1em;
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        letter-spacing: normal;
+        opacity: 1;
+    }
+}
+
+@keyframes text-focus-in {
+    0% {
+        -webkit-filter: blur(12px);
+                filter: blur(12px);
+        opacity: 0;
+    }
+    100% {
+        -webkit-filter: blur(0px);
+                filter: blur(0px);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes slide-up {
+    0% {
+        top: 100vh;
+    }
+    100% {
+        top: 0vh;
+    }
+}
+
+@keyframes slide-up {
+    0% {
+        top: 100vh;
+    }
+    100% {
+        top: 0vh;
+    }
+}
+
+@-webkit-keyframes tracking-in-expand {
+    0% {
+        letter-spacing: -0.5em;
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes tracking-in-expand {
+    0% {
+        letter-spacing: -0.5em;
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+  
+@-webkit-keyframes slide-left {
+    0% {
+        right: -250px;
+    }
+    100% {
+        right: 0;
+    }
+}
+
+@keyframes slide-left {
+    0% {
+        right: -250px;
+    }
+    100% {
+        right: 0;
+    }
+}
+
+@-webkit-keyframes slide-right {
+    0% {
+        right: 0;
+    }
+    100% {
+        right: -250px;
+    }
+}
+
+@keyframes slide-right {
+    0% {
+        right: 0;
+    }
+    100% {
+        right: -250px;
+    }
+}
+
+
+@-webkit-keyframes form-slide-down {
+    0% {
+        top: -100vh;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+@keyframes form-slide-down {
+    0% {
+        top: -100vh;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+@-webkit-keyframes form-slide-up {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: -100vh;
+    }
+}
+
+@keyframes form-slide-up {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: -100vh;
+    }
+}

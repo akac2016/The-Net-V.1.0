@@ -1,0 +1,69 @@
+.slide-transition-enter {
+  opacity: 0;
+}
+
+.slide-transition-enter-active {
+  opacity: 1;
+}
+
+.slide-transition-exit {
+  opacity: 1;
+}
+
+.slide-transition-exit-active {
+  opacity: 0;
+}
+
+@keyframes fadeInAnimation {
+  0%   { opacity:0; }
+  100%  { opacity:1; }
+}
+
+@-o-keyframes fadeInAnimation {
+  0%   { opacity:0; }
+  100%  { opacity:1; }
+}
+
+@-moz-keyframes fadeInAnimation {
+  0%   { opacity:0; }
+  100%  { opacity:1; }
+}
+@-webkit-keyframes fadeInAnimation {
+  0%   { opacity:0; }
+  100%  { opacity:1; }
+}
+
+@keyframes flickerAnimation {
+  0%   { opacity:0; }
+  50%  { opacity:0.9; }
+  100% { opacity:0; }
+}
+@-o-keyframes flickerAnimation{
+  0%   { opacity:0; }
+  50%  { opacity:0.9; }
+  100% { opacity:0; }
+}
+@-moz-keyframes flickerAnimation{
+  0%   { opacity:0; }
+  50%  { opacity:0.9; }
+  100% { opacity:0; }
+}
+@-webkit-keyframes flickerAnimation{
+  0%   { opacity:0; }
+  50%  { opacity:0.9; }
+  100% { opacity:0; }
+}
+
+.click-to-contine {
+  position: fixed;
+  width: 100vw;
+  bottom: 15px;
+  text-align: center;
+  font-size: 30px;
+  -webkit-animation: flickerAnimation 4s infinite;
+  -moz-animation: flickerAnimation 4s infinite;
+  -o-animation: flickerAnimation 4s infinite;
+  animation: flickerAnimation 4s infinite;
+  animation-delay: 3s;
+  opacity: 0;
+}

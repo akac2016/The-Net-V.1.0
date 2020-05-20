@@ -1,0 +1,13 @@
+.fileContainer {
+    background-color: #F4EEE6;
+    box-shadow: none;
+}
+
+.deleteImage {
+    background-color: black !important;
+    transition: 0.25s ease;
+}
+
+.deleteImage:hover {
+    background-color: red !important;
+}
