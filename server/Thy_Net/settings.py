@@ -63,7 +63,7 @@ ROOT_URLCONF = 'Thy_Net.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, '../client/build')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -140,11 +140,13 @@ AWS_DEFAULT_ACL = None
 
 
 
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION) # DEbug
+STATIC_URL = '/static/'
 
-DEFAULT_FILE_STORAGE = 'Thy_Net.storage_backend.MediaStorage'
 
+#Create Dev and Production Mode
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#DEFAULT_FILE_STORAGE = 'Thy_Net.storage_backend.MediaStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -153,11 +155,12 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
  #Where files from the static ROOT are served during Production
-STATIC_ROOT = os.path.join(BASE_DIR,'static') #The absolute path to the directory where collectstatic will collect files for deploymen
+#STATIC_ROOT = os.path.join(BASE_DIR,'../client/build') #The absolute path to the directory where collectstatic will collect files for deployment
 
 
 # React App
 REACT_APP_DIR = os.path.join(BASE_DIR, '../client/')
+
 REACT_STATIC_DIR = [
     os.path.join(REACT_APP_DIR, 'build', 'static')
 ]
@@ -165,5 +168,13 @@ REACT_STATIC_DIR = [
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_HTTPONLY = False
 CSRF_TRUSTED_ORIGINS = ['localhost:8000']
+
+
+
+STATICFILES_DIRS = [
+   os.path.join(REACT_APP_DIR, "build"),
+    os.path.join(REACT_APP_DIR, "build","static"),
+    os.path.join(BASE_DIR,'static'),
+]
 
 searched_locations = finders.searched_locations

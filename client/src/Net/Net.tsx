@@ -102,9 +102,9 @@ export default class Net extends React.Component<IProps, IState> {
         for (let entry of payload) {
             interviews.push({
                 id: entry.pk.toString(),
-                title: entry.fields.name,
-                text: entry.fields.interview,
-                imageUrls: [entry.fields.image]
+                title: entry.name,
+                text: entry.interview,
+                imageUrls: [entry.image]
             })
         }
         return interviews;

@@ -12,7 +12,7 @@ from django.conf import settings
 from django.middleware.csrf import get_token
 import os
 import logging
-
+from django.contrib.staticfiles import finders #For Debug
 #Homepage View
 def home(request):
         return render(request,"main/home.html")
@@ -54,7 +54,7 @@ class NodeSerializer(serializers.BaseSerializer):
         return{
 
             'name':instance.name,
-            "id": instance.pk,
+            "pk": instance.pk,
             'interview': instance.interview,
             'image': instance.image.url
         }
@@ -69,7 +69,10 @@ def nodes_ajax(request):
         return JsonResponse(serializer.data,safe=False)
 
 
+def home(request):
+    return render(request,'index.html')
 
+#Delete
 class FrontendAppView(View):
     """
     Serves the compiled frontend entry point (only works if you have run `yarn
