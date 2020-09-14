@@ -45,9 +45,14 @@ def csrf(request):
 
 def get_node_image(request, pk):
     if (request.method == "GET"):
+        node = Node.objects.get(pk=pk)
+        return node.presentation()
+'''
+def get_node_image(request, pk):
+    if (request.method == "GET"):
         return JsonResponse({"Hmmmmmm": "Hmmmmm"})
         # return JsonResponse({imageU})
-
+'''
 #Serializer Class
 class NodeSerializer(serializers.BaseSerializer):
     def to_representation(self,instance):
@@ -66,6 +71,12 @@ def nodes_ajax(request):
     if request.method == "GET":
         queryset = Node.objects.all()
         serializer = NodeSerializer(queryset, many=True)
+        return JsonResponse(serializer.data,safe=False)
+
+def nodes_ajax_id(request,pk):
+    if request.method == 'GET':
+        node = Node.objects.get(pk=pk)
+        serializer = NodeSerializer(node)
         return JsonResponse(serializer.data,safe=False)
 
 

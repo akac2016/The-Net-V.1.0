@@ -3,4 +3,4 @@ venv
 __pycache__
 *.sqlite3
 server/.idea
-
+.vscode

@@ -33,6 +33,8 @@ urlpatterns = [
     path('form/', main_views.node_form, name='new_node'),
     path('post_form/', main_views.form_ajax, name='form_ajax'),
     path("nodes/", main_views.nodes_ajax, name = "nodes"),
+    path("nodes/<int:pk>", main_views.nodes_ajax_id, name = "specificnode"),
+    path("images/<int:pk>", main_views.get_node_image, name = "nodeimage"),
 
     #User URLs
     path('admin/', admin.site.urls),
