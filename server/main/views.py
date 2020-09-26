@@ -46,7 +46,7 @@ def csrf(request):
 def get_node_image(request, pk):
     if (request.method == "GET"):
         node = Node.objects.get(pk=pk)
-        return node.presentation()
+        return render(request,node.presentation())
 '''
 def get_node_image(request, pk):
     if (request.method == "GET"):
