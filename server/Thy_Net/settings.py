@@ -85,7 +85,8 @@ WSGI_APPLICATION = 'Thy_Net.wsgi.application'
 
 #CORS Access-Control-Allow-Origin
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080"
+    "http://localhost:8080",
+    "http://localhost:3000"
 ]
 
 
