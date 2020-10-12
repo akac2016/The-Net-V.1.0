@@ -84,11 +84,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Thy_Net.wsgi.application'
 
 #CORS Access-Control-Allow-Origin
+''' commented out for now
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:3000"
 ]
+'''
 
+CORS_ORIGIN_ALLOW_ALL = true 
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
