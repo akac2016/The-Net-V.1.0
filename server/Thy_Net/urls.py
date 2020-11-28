@@ -41,6 +41,7 @@ urlpatterns = [
     path('signup/', user_views.signup_view, name ="signup"),
     path('login/',user_views.login_view, name = 'login'),
     path('logout/',user_views.logout_view),
+    path('<str:user/favorites', user_views.favorites_view, name= 'favorites'),
 
     #Comments
     path('comments/<int:pk>',comment_views.get_node_comment, name="comments"),

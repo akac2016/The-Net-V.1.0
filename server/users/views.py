@@ -3,7 +3,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from users.models import NodeUser
 
+#Favorites view, TBI
+def favorites_view(request):
+    account = NodeUser.username.get('user')
+    return ''
 
 
 # Signup View

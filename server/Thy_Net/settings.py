@@ -67,7 +67,7 @@ ROOT_URLCONF = 'Thy_Net.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, '../client/build')]
+        'DIRS': [os.path.join(BASE_DIR, '../client/build'), os.path.join(BASE_DIR,'../server/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -91,7 +91,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 '''
 
-CORS_ORIGIN_ALLOW_ALL = true 
+CORS_ORIGIN_ALLOW_ALL = True 
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
