@@ -13,7 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+from django.conf.urls import url, include
+from django.contrib import admin 
+from django.contrib.auth import views as auth_views
 from django.urls import path
 from main import views as main_views
 from users import views as user_views
@@ -30,6 +32,7 @@ urlpatterns = [
     #Main URLs
     #path('', main_views.FrontendAppView,name = 'home'), # Edited
     path('', main_views.home, name='home'),  # Edited
+    path('home/', main_views.home, name='home'),  # Edited
     path('form/', main_views.node_form, name='new_node'),
     path('post_form/', main_views.form_ajax, name='form_ajax'),
     path("nodes/", main_views.nodes_ajax, name = "nodes"),
@@ -39,11 +42,13 @@ urlpatterns = [
     #User URLs
     path('admin/', admin.site.urls),
     path('signup/', user_views.signup_view, name ="signup"),
-    path('login/',user_views.login_view, name = 'login'),
-    path('logout/',user_views.logout_view),
-    path('<str:user/favorites', user_views.favorites_view, name= 'favorites'),
-
+    path('login/',auth_views.LoginView.as_view(template_name='main/login.html'), name = 'login'),
+    path('logout/',auth_views.LogoutView.as_view(next_page='/')),
+    path('profile/',user_views.profile_view,name='profile'),
+    
     #Comments
     path('comments/<int:pk>',comment_views.get_node_comment, name="comments"),
     path("comment_form/<int:pk>", comment_views.post_comment, name="comment_form"),
+
+    path('accounts/', include('allauth.urls')),
 ]

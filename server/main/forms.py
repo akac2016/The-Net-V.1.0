@@ -1,5 +1,6 @@
 from django import forms
 from .models import Node
+from django.contrib.auth.forms import UserCreationForm
 
 
 class NewNode(forms.ModelForm):

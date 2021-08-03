@@ -10,10 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+
 import os
 from django.contrib.staticfiles import finders
 from decouple import config, Csv
-
+#from users import models
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,13 +25,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
 
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS",cast=Csv())
 
-
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 # Application definition
 INSTALLED_APPS = [
@@ -44,10 +47,20 @@ INSTALLED_APPS = [
     'users',
     'comments',
     'rest_framework',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'sslserver',
+    
 
     'storages',
     'corsheaders',
+    'django.contrib.sites',
+    'social_django',
 ]
+
+
 
 MIDDLEWARE = [
     
@@ -59,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+    "django_ssl_auth.SSLClientAuthMiddleware",
 
 ]
 
@@ -76,6 +91,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -129,6 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "users.NodeUser"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -151,6 +170,15 @@ AWS_S3_OBJECT_PARAMETERS = {
 AWS_LOCATION = 'static'
 AWS_DEFAULT_ACL = None
 
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+AUTOCREATE_VALID_SSL_USERS = True
+SSLCLIENT_LOGIN_URL = None
+
+#ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 
 
 #STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION) # DEbug
@@ -190,4 +218,37 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
 ]
 
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 searched_locations = finders.searched_locations
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    "django_ssl_auth.SSLClientAuthBackend",
+ )
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = 'home'
+
+
+#Google API Auth
+SOCIAL_AUTH_GOOGLE_OAUTH_KEY = '650465844561-l0ksj39jhcqb1kq1br2hllbj5ous0is5.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH_SECRET = 'eaKyPcO9yWcmz3do6bk6KEKD'
+
+cid = '650465844561-l0ksj39jhcqb1kq1br2hllbj5ous0is5.apps.googleusercontent.com'
+
+#For security, fix later
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': cid,
+            'secret': SOCIAL_AUTH_GOOGLE_OAUTH_SECRET,
+            'key': SOCIAL_AUTH_GOOGLE_OAUTH_KEY
+        }
+    }
+}
+
+
+

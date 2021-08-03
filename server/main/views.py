@@ -13,6 +13,7 @@ from django.middleware.csrf import get_token
 import os
 import logging
 from django.contrib.staticfiles import finders #For Debug
+from django.http.response import HttpResponseRedirect
 #Homepage View
 def home(request):
         return render(request,"main/home.html")
@@ -31,14 +32,17 @@ def form_ajax(request):
             image = form.cleaned_data.get('image')
             obj = Node.objects.create(interview = interview, image = image)
             obj.save()
+            return HttpResponseRedirect('/')
 
         else:
             return HttpResponseBadRequest("<p> Invalid Form </p>")
 
-
-        return JsonResponse({'responseText':False})
+        
+        #return JsonResponse({'responseText':False})
+        
     else:
         return HttpResponseForbidden("<p> Bad Request </p>")
+    
 
 def csrf(request):
     return JsonResponse({'csrfToken': get_token(request)})
