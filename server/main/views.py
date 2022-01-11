@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from main.models import Node
 from main.forms import NewNode
+from users.models import NodeUser
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
 from rest_framework import serializers
 from django.views.generic import View
@@ -14,6 +15,8 @@ import os
 import logging
 from django.contrib.staticfiles import finders #For Debug
 from django.http.response import HttpResponseRedirect
+from django.views.generic.list import ListView
+
 #Homepage View
 def home(request):
         return render(request,"main/home.html")
@@ -50,7 +53,7 @@ def csrf(request):
 def get_node_image(request, pk):
     if (request.method == "GET"):
         node = Node.objects.get(pk=pk)
-        return 
+        return node.image_url()
 '''
 def get_node_image(request, pk):
     if (request.method == "GET"):
@@ -68,6 +71,16 @@ class NodeSerializer(serializers.BaseSerializer):
             'image': instance.image.url
         }
 
+#Profile Search Result Class
+class ProfileSearchView(ListView):
+    template_name = '/main/list.html'
+    model = NodeUser
+
+    def get_queryset(self, first_name):
+        node_users = self.model.objects.all()
+        if first_name:
+            node_users = node_users.filter(first_name__icontains=first_name)
+        return node_users
 
 
 #Nodes Page
@@ -87,29 +100,15 @@ def nodes_ajax_id(request,pk):
 def home(request):
     return render(request,'index.html')
 
-#Delete
-class FrontendAppView(View):
-    """
-    Serves the compiled frontend entry point (only works if you have run `yarn
-    run build`).
-    """
+#Search Results
 
-    def get(self, request):
-        logger = logging.getLogger(__name__)
-        logger.info("HERE")
-        try:
-            with open(os.path.join(settings.REACT_APP_DIR, 'build', 'index.html')) as f:
-                return HttpResponse(f.read())
-        except FileNotFoundError:
-            logging.exception('Production build of app not found')
-            return HttpResponse(
-                """
-                This URL is only used when you have built the production
-                version of the app. Visit http://localhost:3000/ instead, or
-                run `yarn run build` to test the production version.
-                """,
-                status=501,
-            )
+def get_search_results(request, first_name):
+    psv = ProfileSearchView()
+    results = psv.get_queryset(first_name)
+    ret = '\n '.join([user.first_name for user in results])
+    print(ret)
+    return HttpResponse(ret)
+
 
 
 

@@ -1,0 +1,10 @@
+{%  extends 'main/base.html' %}
+
+<h1>Search Results</h1>
+<ul>
+{% for article in object_list %}
+    <li>{{ article.pub_date|date }} - {{ article.headline }}</li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>

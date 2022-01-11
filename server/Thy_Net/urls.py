@@ -50,5 +50,8 @@ urlpatterns = [
     path('comments/<int:pk>',comment_views.get_node_comment, name="comments"),
     path("comment_form/<int:pk>", comment_views.post_comment, name="comment_form"),
 
+    #Search
+    path('search/<str:first_name>',main_views.get_search_results, name="searchresults"),
+
     path('accounts/', include('allauth.urls')),
 ]
