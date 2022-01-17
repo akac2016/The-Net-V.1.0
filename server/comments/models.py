@@ -12,6 +12,7 @@ class Comment(models.Model):
     class Meta:
         ordering = ['created_on']
 
-    def __str(self):
-        return 'Comment {} by {}'.format(self.message,self.name)
+    # String representation of the comment(how it'll appear in requests)
+    def __str__(self):
+        return 'Comment: {} by: {}'.format(self.message,self.name)
 

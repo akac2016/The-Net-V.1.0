@@ -37,6 +37,7 @@ urlpatterns = [
     path('post_form/', main_views.form_ajax, name='form_ajax'),
     path("nodes/", main_views.nodes_ajax, name = "nodes"),
     path("nodes/<int:pk>", main_views.nodes_ajax_id, name = "specificnode"),
+    path("nodes/<int:pk>/comments", main_views.get_comments_for_node, name = "specificnodecomments"),
     path("images/<int:pk>", main_views.get_node_image, name = "nodeimage"),
 
     #User URLs
@@ -46,9 +47,9 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(next_page='/')),
     path('profile/',user_views.profile_view,name='profile'),
     
-    #Comments
-    path('comments/<int:pk>',comment_views.get_node_comment, name="comments"),
-    path("comment_form/<int:pk>", comment_views.post_comment, name="comment_form"),
+    # Comments
+    #path('comments/<int:pk>',comment_views.get_node_comment, name="comments"),
+    #path("comment_form/<int:pk>", comment_views.post_comment, name="comment_form"),
 
     #Search
     path('search/<str:first_name>',main_views.get_search_results, name="searchresults"),

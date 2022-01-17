@@ -49,7 +49,7 @@ class UserSerializer(serializers.BaseSerializer):
 
         return ret
 
-#Profile view
+#Profile view, if not logged in, login page response is sent
 @login_required
 def profile_view(request):    
     if request.method == 'GET':

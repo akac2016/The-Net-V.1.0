@@ -54,12 +54,14 @@ def get_node_image(request, pk):
     if (request.method == "GET"):
         node = Node.objects.get(pk=pk)
         return node.image_url()
-'''
-def get_node_image(request, pk):
+
+def get_comments_for_node(request,pk):
     if (request.method == "GET"):
-        return JsonResponse({"Hmmmmmm": "Hmmmmm"})
-        # return JsonResponse({imageU})
-'''
+        node = Node.objects.get(pk=pk)
+        #Id: comment
+        response_dict = {comment.id:str(comment) for comment in node.comments.all()}
+        return JsonResponse(response_dict)
+
 #Serializer Class
 class NodeSerializer(serializers.BaseSerializer):
     def to_representation(self,instance):
