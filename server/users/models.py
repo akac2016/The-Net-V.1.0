@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, AbstractBaseUser
+from django.contrib.auth.models import User, AbstractBaseUser, AbstractUser
 from django.db.models import CharField,DateTimeField, EmailField, Model
 from django.core.mail import send_mail
 from django.contrib.auth.base_user import BaseUserManager
@@ -31,8 +31,9 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class NodeUser(AbstractBaseUser):
+class NodeUser(AbstractUser):
 
+    username = None
     email = EmailField(max_length=100, unique=True)
     first_name = CharField(('first name'), max_length=30)
     last_name = CharField(('last name'), max_length=30, blank=True)
@@ -40,8 +41,9 @@ class NodeUser(AbstractBaseUser):
     updated = DateTimeField(auto_now_add=True)
     objects = UserManager()
 
-    REQUIRED_FILEDS = []
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
     unique = True
 
     def __unicode__(self):
